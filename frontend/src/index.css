@@ -1,0 +1,386 @@
+@import 'tailwindcss';
+
+/* Publik: token Tailwind custom. Tidak memakai kelas DaisyUI. */
+@theme {
+  --color-primary: #108652;
+  --color-primary-hover: #0d6e44;
+  --color-secondary: #b7102a;
+  --color-base: #f0f5ef;
+  --color-surface: #ffffff;
+  --color-mist: #f0f5ef;
+  --color-hero: #0e3b2e;
+  --color-hero-footer: #0a4d2f;
+  --color-neutral-50: #f8fafc;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-200: #e2e8f0;
+  --color-neutral-300: #cbd5e1;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #64748b;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1e293b;
+  --color-neutral-900: #0f172a;
+  --spacing-chrome: 10.5rem;
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #0ea5e9;
+  --radius-md: 0.375rem;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-headline: 'Manrope', system-ui, sans-serif;
+}
+
+/* Admin: palet DaisyUI sama dengan MyUNAND, scoped ke #admin-app. */
+@plugin "daisyui" {
+  themes: false;
+  root: "#admin-app";
+  exclude: rootcolor, rootscrollgutter;
+  logs: false;
+}
+
+@plugin "daisyui/theme" {
+  name: 'admin';
+  default: false;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-primary: #15803d;
+  --color-primary-content: #ffffff;
+  --color-secondary: #0284c7;
+  --color-secondary-content: #ffffff;
+  --color-accent: #d97706;
+  --color-accent-content: #ffffff;
+  --color-neutral: #1e293b;
+  --color-neutral-content: #f8fafc;
+
+  --color-base-100: #ffffff;
+  --color-base-200: #f3f4f6;
+  --color-base-300: #e5e7eb;
+  --color-base-content: #1e293b;
+
+  --color-info: #0ea5e9;
+  --color-info-content: #ffffff;
+  --color-success: #16a34a;
+  --color-success-content: #ffffff;
+  --color-warning: #f59e0b;
+  --color-warning-content: #ffffff;
+  --color-error: #ef4444;
+  --color-error-content: #ffffff;
+
+  --radius-selector: 0.375rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.375rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: 'admin-dark';
+  default: false;
+  prefersdark: false;
+  color-scheme: dark;
+
+  --color-primary: #22c55e;
+  --color-primary-content: #ffffff;
+  --color-secondary: #38bdf8;
+  --color-secondary-content: #082f49;
+  --color-accent: #fbbf24;
+  --color-accent-content: #422006;
+  --color-neutral: #cbd5e1;
+  --color-neutral-content: #0f172a;
+
+  --color-base-100: #0f172a;
+  --color-base-200: #1e293b;
+  --color-base-300: #334155;
+  --color-base-content: #f1f5f9;
+
+  --color-info: #38bdf8;
+  --color-info-content: #082f49;
+  --color-success: #4ade80;
+  --color-success-content: #052e16;
+  --color-warning: #fbbf24;
+  --color-warning-content: #422006;
+  --color-error: #f87171;
+  --color-error-content: #450a0a;
+
+  --radius-selector: 0.375rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.375rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html {
+  font-size: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-base);
+  color: var(--color-neutral-800);
+}
+
+html[data-theme-mode='dark'] {
+  --color-base: #0b1220;
+  --color-surface: #111827;
+  --color-mist: #0f172a;
+  --color-neutral-50: #1e293b;
+  --color-neutral-100: #1e293b;
+  --color-neutral-200: #334155;
+  --color-neutral-300: #475569;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #94a3b8;
+  --color-neutral-600: #cbd5e1;
+  --color-neutral-700: #e2e8f0;
+  --color-neutral-800: #f1f5f9;
+  --color-neutral-900: #f8fafc;
+}
+
+.public-header .public-topbar a {
+  color: inherit;
+}
+
+.public-header:not(.is-solid) a.public-brand,
+.public-header:not(.is-solid) .public-brand-title,
+.public-header:not(.is-solid) .public-nav > a {
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+}
+
+.public-header:not(.is-solid) .public-brand-sub {
+  color: rgb(255 255 255 / 0.8);
+  -webkit-text-fill-color: rgb(255 255 255 / 0.8);
+}
+
+.public-header .public-dropdown,
+.public-header .public-dropdown a,
+.public-header .public-dropdown a:link,
+.public-header .public-dropdown a:visited,
+.public-header .public-dropdown a:hover {
+  color: var(--color-neutral-800);
+  -webkit-text-fill-color: var(--color-neutral-800);
+}
+
+.public-header.is-solid .public-bar,
+.public-header.is-solid .public-bar a,
+.public-header.is-solid .public-bar a:link,
+.public-header.is-solid .public-bar a:visited,
+.public-header.is-solid .public-brand-title,
+.public-header.is-solid .public-nav,
+.public-header.is-solid .public-nav a,
+.public-header.is-solid .public-nav a:link,
+.public-header.is-solid .public-nav a:visited {
+  color: var(--color-neutral-900);
+  -webkit-text-fill-color: var(--color-neutral-900);
+}
+
+.public-header.is-solid .public-brand-sub {
+  color: var(--color-neutral-600);
+  -webkit-text-fill-color: var(--color-neutral-600);
+}
+
+#admin-app {
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+#admin-app .badge {
+  border-radius: 9999px;
+}
+
+#admin-app .table {
+  border-collapse: collapse;
+  border: 1px solid var(--color-base-300);
+}
+
+#admin-app .table :is(th, td) {
+  border: 1px solid var(--color-base-300);
+}
+
+#admin-app .breadcrumbs,
+#admin-app .breadcrumbs > ul {
+  max-width: 100%;
+  overflow: visible;
+  flex-wrap: wrap;
+  white-space: normal;
+}
+
+#admin-app .no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+#admin-app .no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.public-content {
+  line-height: 1.75;
+  color: var(--color-neutral-700);
+}
+
+.public-content > :first-child {
+  margin-top: 0;
+}
+
+.public-content > p:first-of-type {
+  color: var(--color-neutral-800);
+}
+
+.public-content p {
+  margin: 0.85rem 0;
+}
+
+.public-content h1,
+.public-content h2,
+.public-content h3,
+.public-content h4,
+.public-content h5,
+.public-content h6 {
+  margin: 1.75rem 0 0.6rem;
+  font-family: var(--font-headline);
+  font-weight: 600;
+  color: var(--color-neutral-900);
+}
+
+.public-content h2,
+.tiptap-editor h2 {
+  font-size: 1.25rem;
+}
+
+.public-content h3,
+.tiptap-editor h3 {
+  font-size: 1.05rem;
+}
+
+.public-content blockquote {
+  margin: 1rem 0;
+  border-left: 3px solid var(--color-primary);
+  padding-left: 0.85rem;
+  color: var(--color-neutral-600);
+}
+
+.public-content ul,
+.public-content ol {
+  margin: 0.85rem 0;
+  padding-left: 1.35rem;
+}
+
+.public-content ul {
+  list-style: disc;
+}
+
+.public-content ol {
+  list-style: decimal;
+}
+
+.public-content li {
+  margin: 0.35rem 0;
+}
+
+.public-content li::marker {
+  color: var(--color-primary);
+}
+
+.public-content a {
+  color: var(--color-primary);
+}
+
+.public-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.375rem;
+}
+
+.public-content table,
+.tiptap-editor table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+}
+
+.public-content th,
+.public-content td,
+.tiptap-editor th,
+.tiptap-editor td {
+  border: 1px solid var(--color-neutral-300);
+  padding: 0.4rem 0.55rem;
+  vertical-align: top;
+}
+
+.public-content th,
+.tiptap-editor th {
+  background: var(--color-neutral-100);
+  font-weight: 600;
+}
+
+.tiptap-editor ul[data-type='taskList'] {
+  list-style: none;
+  padding-left: 0;
+}
+
+.tiptap-editor ul[data-type='taskList'] li {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tiptap-editor p.is-editor-empty:first-child::before {
+  color: var(--color-neutral-400);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap-editor:focus-visible {
+  outline: none;
+}
+
+#admin-app::-webkit-scrollbar,
+#admin-app *::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+#admin-app::-webkit-scrollbar-track,
+#admin-app *::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#admin-app::-webkit-scrollbar-thumb,
+#admin-app *::-webkit-scrollbar-thumb {
+  background: rgb(100 116 139 / 0.2);
+  border-radius: 9999px;
+}
+
+#admin-app::-webkit-scrollbar-thumb:hover,
+#admin-app *::-webkit-scrollbar-thumb:hover {
+  background: rgb(100 116 139 / 0.4);
+}
+
+[data-sonner-toaster] {
+  --normal-bg: var(--color-base-100);
+  --normal-text: var(--color-base-content);
+  --normal-border: var(--color-base-300);
+}

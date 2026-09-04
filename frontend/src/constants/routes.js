@@ -1,0 +1,37 @@
+function withUnit(slug, path) {
+  return slug ? `/${slug}${path}` : path;
+}
+
+export const ROUTES = {
+  home: '/',
+  unit: (slug) => (slug ? `/${slug}` : '/'),
+  unitPage: (slug, pageSlug) => withUnit(slug, `/halaman/${pageSlug}`),
+  unitPosts: (slug) => withUnit(slug, '/pengumuman'),
+  unitPost: (slug, postSlug) => withUnit(slug, `/pengumuman/${postSlug}`),
+  adminLogin: '/admin/login',
+  adminDashboard: '/admin',
+  adminUnits: '/admin/units',
+  adminUnitNew: '/admin/units/new',
+  adminUnitEdit: (id) => `/admin/units/${id}/edit`,
+  adminPages: '/admin/pages',
+  adminPageNew: '/admin/pages/new',
+  adminPageEdit: (id) => `/admin/pages/${id}/edit`,
+  adminPosts: '/admin/posts',
+  adminPostNew: '/admin/posts/new',
+  adminPostEdit: (id) => `/admin/posts/${id}/edit`,
+  adminCategories: '/admin/categories',
+  adminMedia: '/admin/media',
+  adminMenus: '/admin/menus',
+  adminOrganization: '/admin/organization',
+  adminAgendas: '/admin/agendas',
+  adminAgendaNew: '/admin/agendas/new',
+  adminAgendaEdit: (id) => `/admin/agendas/${id}/edit`,
+  adminUsers: '/admin/users',
+  adminUserNew: '/admin/users/new',
+  adminUserEdit: (id) => `/admin/users/${id}/edit`,
+  adminPermissions: '/admin/permissions',
+  adminSeo: '/admin/seo',
+  adminLanding: '/admin/landing',
+  unitOrganization: (slug) => withUnit(slug, '/organisasi'),
+  unitAgendas: (slug) => withUnit(slug, '/agenda'),
+};
