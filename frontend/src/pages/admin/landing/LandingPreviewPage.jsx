@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { PublicLayout } from '../../../layouts/PublicLayout';
 import { LandingPageSkeleton } from '../../../components/public/LandingPageSkeleton';
 import { BuilderRender } from '../../../builder/BuilderRender';
@@ -24,7 +24,7 @@ export default function LandingPreviewPage() {
 
   if (landingQuery.isLoading) {
     return (
-      <PublicLayout preview>
+      <PublicLayout preview previewBackTo={editorHref}>
         <LandingPageSkeleton />
       </PublicLayout>
     );
@@ -34,13 +34,14 @@ export default function LandingPreviewPage() {
   const previewUnit = { ...unit, landing };
 
   return (
-    <PublicLayout unit={unit} menus={unit?.menus || []} transparent preview seo={{ title: 'Pratinjau beranda' }}>
-      <p className="relative z-20 bg-warning/20 px-4 py-2 text-center text-sm">
-        Pratinjau draf.{' '}
-        <Link to={editorHref} className="text-primary">
-          Kembali ke editor
-        </Link>
-      </p>
+    <PublicLayout
+      unit={unit}
+      menus={unit?.menus || []}
+      transparent
+      preview
+      previewBackTo={editorHref}
+      seo={{ title: 'Pratinjau beranda' }}
+    >
       {hasBuilder(document) ? (
         <BuilderRender document={document} unit={previewUnit} unitSlug={unit?.isDefault ? '' : unit?.slug} />
       ) : (

@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Icon } from '../ui/Icon';
 import { ROUTES } from '../../constants/routes';
 
 /**
@@ -7,21 +6,23 @@ import { ROUTES } from '../../constants/routes';
  */
 export function SiteBreadcrumb({ unitSlug, items = [], tone = 'dark' }) {
   const light = tone === 'light';
-  const linkClass = light ? 'text-white/70 hover:text-white' : 'hover:text-primary';
-  const currentClass = light ? 'text-white' : 'text-neutral-800';
-  const sepClass = light ? 'text-white/40' : 'text-neutral-400';
+  const linkClass = light ? 'text-white/55 hover:text-white' : 'hover:text-primary';
+  const currentClass = light ? 'text-white/70' : 'text-neutral-800';
+  const sepClass = light ? 'text-white/30' : 'text-neutral-400';
 
   return (
-    <nav aria-label="Breadcrumb" className="text-sm">
-      <ol className="flex flex-wrap items-center gap-1">
+    <nav aria-label="Breadcrumb" className="text-xs tracking-wide">
+      <ol className="flex flex-wrap items-center gap-1.5">
         <li>
           <Link to={unitSlug ? ROUTES.unit(unitSlug) : ROUTES.home} className={linkClass}>
             Beranda
           </Link>
         </li>
         {items.map((item) => (
-          <li key={item.label} className="flex items-center gap-1">
-            <Icon icon="mdi:chevron-right" className={`size-4 ${sepClass}`} />
+          <li key={item.label} className="flex items-center gap-1.5">
+            <span className={sepClass} aria-hidden="true">
+              /
+            </span>
             {item.to ? (
               <Link to={item.to} className={linkClass}>
                 {item.label}

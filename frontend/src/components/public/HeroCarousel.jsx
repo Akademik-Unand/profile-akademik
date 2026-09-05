@@ -34,7 +34,7 @@ export function HeroCarousel({ landing, posts = [], unitSlug, overlap = false })
       ) : null}
       <div className="absolute inset-0 bg-gradient-to-t from-hero/95 via-hero/40 to-black/25" />
       <div
-        className={`relative z-10 mx-auto w-full max-w-7xl px-4 pt-chrome md:px-6 ${overlap ? 'pb-28 md:pb-36' : 'pb-16'}`}
+        className={`relative z-10 mx-auto w-full max-w-7xl px-4 pt-chrome md:px-6 ${overlap ? 'pb-24 md:pb-32' : 'pb-16'}`}
         data-landing-hero-copy
       >
         {landing?.eyebrow ? <p className="text-sm text-white/70">{landing.eyebrow}</p> : null}

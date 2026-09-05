@@ -2,66 +2,15 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Icon } from '../ui/Icon';
 import { ROUTES } from '../../constants/routes';
+import { isMenuItemActive } from '../../helpers/menuActive';
 import { MenuLink } from './MenuLink';
+import { MegaDropdown, UnitsDropdown } from './NavDropdown';
 import { SiteLogo } from './SiteLogo';
 import { SiteTopBar } from './SiteTopBar';
 import { unitNavEntries, unitPathSlug } from '../../helpers/publicHref';
 import { socialUnit, unitSocialLinks } from '../../helpers/unitSocial';
 
 const MAIN_SECTIONS = new Set(['pengumuman', 'halaman', 'organisasi', 'agenda']);
-
-function dropdownFrame(alignRight) {
-  return `invisible absolute top-full z-50 w-[min(36rem,calc(100vw-2rem))] max-w-[min(36rem,calc(100vw-2rem))] pt-1 opacity-0 transition-opacity group-hover:visible group-hover:opacity-100 ${
-    alignRight ? 'right-0 left-auto translate-x-0' : 'left-0'
-  }`;
-}
-
-function MegaDropdown({ item, unitSlug, alignRight, triggerClass }) {
-  const wide = (item.children?.length || 0) > 3;
-
-  return (
-    <div className="group relative">
-      <span className={`inline-flex cursor-default items-center gap-1 py-2 font-headline text-sm tracking-tight ${triggerClass}`}>
-        {item.label}
-        <Icon icon="mdi:chevron-down" className="size-4" />
-      </span>
-      <div className={dropdownFrame(alignRight)}>
-        <div
-          className={`public-dropdown rounded-md bg-surface p-3 text-neutral-800 shadow-md ${wide ? 'grid grid-cols-2 gap-1' : 'flex flex-col gap-1'}`}
-        >
-          {item.children.map((child) => (
-            <MenuLink
-              key={child.id}
-              item={child}
-              unitSlug={unitSlug}
-              className="rounded-md px-3 py-2 text-sm text-neutral-800 hover:bg-mist"
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function UnitsDropdown({ entries, alignRight, triggerClass }) {
-  return (
-    <div className="group relative">
-      <span className={`inline-flex cursor-default items-center gap-1 py-2 font-headline text-sm tracking-tight ${triggerClass}`}>
-        Unit
-        <Icon icon="mdi:chevron-down" className="size-4" />
-      </span>
-      <div className={dropdownFrame(alignRight)}>
-        <div className="public-dropdown flex flex-col gap-1 rounded-md bg-surface p-3 text-neutral-800 shadow-md">
-          {entries.map((entry) => (
-            <Link key={entry.key} to={entry.to} className="rounded-md px-3 py-2 text-sm text-neutral-800 hover:bg-mist">
-              {entry.label}
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export function SiteHeader({ unit, menus = [], units = [], transparent }) {
   const location = useLocation();
@@ -111,26 +60,20 @@ export function SiteHeader({ unit, menus = [], units = [], transparent }) {
               </span>
             </span>
           </Link>
-          <nav className="public-nav hidden items-center gap-8 lg:flex">
+          <nav className="public-nav hidden items-center gap-7 lg:flex">
             {menus.map((item, index) =>
               item.children?.length ? (
-                <MegaDropdown
-                  key={item.id}
-                  item={item}
-                  unitSlug={slug}
-                  alignRight={index >= menus.length / 2}
-                  triggerClass=""
-                />
+                <MegaDropdown key={item.id} item={item} unitSlug={slug} alignRight={index >= menus.length / 2} />
               ) : (
                 <MenuLink
                   key={item.id}
                   item={item}
                   unitSlug={slug}
-                  className="py-2 font-headline text-sm tracking-tight hover:opacity-80"
+                  className={`public-nav-link${isMenuItemActive(item, slug, location.pathname, location.search) ? ' is-active' : ''}`}
                 />
               ),
             )}
-            {unitEntries.length ? <UnitsDropdown entries={unitEntries} alignRight triggerClass="" /> : null}
+            {unitEntries.length ? <UnitsDropdown entries={unitEntries} alignRight /> : null}
           </nav>
           <button type="button" className="lg:hidden" onClick={() => setMobileOpen((open) => !open)} aria-label="Menu">
             <Icon icon={mobileOpen ? 'mdi:close' : 'mdi:menu'} className="size-6" />
@@ -147,7 +90,7 @@ export function SiteHeader({ unit, menus = [], units = [], transparent }) {
                   key={child.id}
                   item={child}
                   unitSlug={slug}
-                  className="mt-1 block pl-3 text-sm text-neutral-600"
+                  className="public-mobile-sub"
                   onClick={() => setMobileOpen(false)}
                 />
               ))}
@@ -160,7 +103,7 @@ export function SiteHeader({ unit, menus = [], units = [], transparent }) {
                 <Link
                   key={entry.key}
                   to={entry.to}
-                  className="mt-1 block pl-3 text-sm text-neutral-600"
+                  className="public-mobile-sub"
                   onClick={() => setMobileOpen(false)}
                 >
                   {entry.label}

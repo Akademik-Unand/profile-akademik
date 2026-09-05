@@ -5,7 +5,7 @@ export function LandingPageSkeleton() {
     <>
       <div className="pb-8">
         <section className="relative flex min-h-svh items-end overflow-hidden bg-hero">
-          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pt-chrome pb-28 md:px-6 md:pb-36">
+          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pt-chrome pb-24 md:px-6 md:pb-32">
             <Skeleton className="h-4 w-32 !bg-white/20" />
             <Skeleton className="mt-3 h-12 w-full max-w-3xl !bg-white/25 md:h-16" />
             <Skeleton className="mt-4 h-16 max-w-xl !bg-white/20" />
@@ -17,7 +17,7 @@ export function LandingPageSkeleton() {
             </div>
           </div>
         </section>
-        <div className="relative z-10 mx-auto -mt-16 max-w-7xl px-4 md:-mt-20 md:px-6">
+        <div className="relative z-10 mx-auto -mt-8 max-w-7xl px-4 md:-mt-12 md:px-6">
           <div className="grid grid-cols-2 overflow-hidden rounded-md border border-neutral-200 bg-surface sm:grid-cols-3 lg:grid-cols-6">
             {Array.from({ length: 6 }).map((_, index) => (
               <div key={index} className="px-4 py-5">

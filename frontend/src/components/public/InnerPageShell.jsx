@@ -9,10 +9,11 @@ import { BG_CLASS } from '../../builder/tokens';
 export function InnerPageSkeleton({ wide = false }) {
   return (
     <div className="bg-base">
-      <div className="bg-hero px-4 pt-chrome pb-10 md:px-6 md:pb-12">
-        <div className="mx-auto max-w-7xl space-y-4">
-          <Skeleton className="h-4 w-48" />
-          <Skeleton className="h-10 w-2/3 max-w-xl" />
+      <div className="border-b border-white/10 bg-hero px-4 pt-chrome pb-12 md:px-6 md:pb-14">
+        <div className="mx-auto max-w-7xl">
+          <Skeleton className="h-3 w-40 !bg-white/20" />
+          <Skeleton className="mt-6 h-4 w-36 !bg-white/15" />
+          <Skeleton className="mt-2 h-10 w-2/3 max-w-xl !bg-white/25" />
         </div>
       </div>
       <div className="mx-auto max-w-7xl px-4 py-10 md:px-6 md:py-14">
