@@ -205,6 +205,164 @@ html[data-theme-mode='dark'] {
   font-family: 'DM Sans', system-ui, sans-serif;
 }
 
+#admin-app .builder-canvas [data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+  pointer-events: auto !important;
+}
+
+#admin-app .builder-canvas {
+  height: 100%;
+  min-height: 0;
+  --puck-user-sidebar-left-width: 17.5rem;
+  --puck-user-sidebar-right-width: 18.5rem;
+}
+
+#admin-app .builder-canvas > div {
+  height: 100%;
+  min-height: 0;
+}
+
+#admin-app .builder-canvas [class*='_PuckCanvas-root_'] {
+  position: relative;
+  opacity: 1;
+}
+
+#admin-app .builder-canvas [data-puck-component] {
+  position: relative;
+  height: auto;
+  min-height: min-content;
+}
+
+/*
+ * Slot Puck: height 100% + min-height 0 saat ada anak.
+ * Di dalam blok (tinggi auto) itu meruntuhkan induk; anak 128px jadi meluber.
+ * Nested slot mengikuti isi; slot kosong tetap pakai 128px bawaan Puck.
+ */
+#admin-app .builder-canvas [data-puck-component] [class*='_DropZone_'] {
+  height: auto !important;
+}
+
+#admin-app .builder-canvas [data-puck-component] [class*='_DropZone--hasChildren_'] {
+  min-height: min-content !important;
+}
+
+#admin-app .builder-canvas .builder-frame {
+  height: auto;
+  min-height: min-content;
+  overflow: visible;
+}
+
+#admin-app .builder-canvas .builder-block-name {
+  position: absolute;
+  top: 0.25rem;
+  left: 0.25rem;
+  z-index: 3;
+  pointer-events: none;
+  background: var(--color-neutral-800);
+  color: var(--color-surface);
+  font-size: 0.625rem;
+  line-height: 1.25;
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--radius-md);
+}
+
+#admin-app .builder-canvas [class*='_DrawerItem_']:has([data-builder-hidden]) {
+  display: none !important;
+}
+
+#admin-app .builder-canvas [class*='_ComponentList_']:has([class*='_DrawerItem_']):not(:has([class*='_DrawerItem_']:not(:has([data-builder-hidden])))) {
+  display: none;
+}
+
+#admin-app .builder-canvas [class*='_DrawerItem-draggable_'] {
+  align-items: flex-start;
+}
+
+#admin-app .builder-canvas .builder-drawer-search,
+#admin-app .builder-canvas .builder-fields-chrome {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--color-base-100);
+  padding-bottom: 0.25rem;
+}
+
+#admin-app .builder-canvas [data-builder-field-hidden] {
+  display: none !important;
+}
+
+#admin-app .builder-canvas .builder-fields-body *:has([data-builder-field-hidden]):not(:has(.builder-field)) {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  min-height: 0 !important;
+}
+
+#admin-app .builder-canvas .builder-fields-body > [class*='_Item_'],
+#admin-app .builder-canvas .builder-fields-body > [class*='_Field_'] {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+#admin-app .builder-canvas .builder-fields-body .builder-field,
+#admin-app .builder-canvas .builder-fields-body .builder-pos {
+  border: 0 !important;
+}
+
+#admin-app .builder-canvas .builder-pos button {
+  min-width: 2rem;
+  min-height: 2rem;
+}
+
+#admin-app .builder-canvas .builder-field {
+  margin-bottom: 0.75rem;
+}
+
+#admin-app .builder-canvas .builder-field [class*='_FieldLabel_'],
+#admin-app .builder-canvas .builder-field[data-field-label='Gaya'] > [class*='Label'] {
+  display: none;
+}
+
+#admin-app .builder-canvas .builder-fields-body:not(:has(.builder-field))::after {
+  content: 'Tidak ada pengaturan yang cocok.';
+  display: block;
+  padding: 0.75rem 0;
+  font-size: 0.75rem;
+  color: var(--color-neutral-500);
+}
+
+#admin-app .builder-canvas .builder-page-hero-hint {
+  padding: 1.25rem 1rem;
+  background: var(--color-hero);
+  color: var(--color-surface);
+  font-size: 0.8125rem;
+}
+
+#admin-app .builder-canvas .builder-page-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 9.5rem;
+  gap: 1rem;
+  align-items: start;
+}
+
+#admin-app .builder-canvas .builder-page-sidebar-hint {
+  margin: 1rem 0.75rem 0 0;
+  padding: 0.75rem;
+  border: 1px dashed var(--color-neutral-300);
+  color: var(--color-neutral-500);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 767px) {
+  .box-static-mobile {
+    position: static !important;
+    inset: auto !important;
+    z-index: auto !important;
+  }
+}
+
 #admin-app .badge {
   border-radius: 9999px;
 }
@@ -235,12 +393,15 @@ html[data-theme-mode='dark'] {
   display: none;
 }
 
-.public-content {
-  line-height: 1.75;
+.public-content,
+.tiptap-editor {
+  overflow: hidden;
+  line-height: 1.8;
   color: var(--color-neutral-700);
 }
 
-.public-content > :first-child {
+.public-content > :first-child,
+.tiptap-editor > :first-child {
   margin-top: 0;
 }
 
@@ -248,8 +409,9 @@ html[data-theme-mode='dark'] {
   color: var(--color-neutral-800);
 }
 
-.public-content p {
-  margin: 0.85rem 0;
+.public-content p,
+.tiptap-editor p {
+  margin: 1.1rem 0;
 }
 
 .public-content h1,
@@ -257,8 +419,10 @@ html[data-theme-mode='dark'] {
 .public-content h3,
 .public-content h4,
 .public-content h5,
-.public-content h6 {
-  margin: 1.75rem 0 0.6rem;
+.public-content h6,
+.tiptap-editor h2,
+.tiptap-editor h3 {
+  margin: 2rem 0 0.75rem;
   font-family: var(--font-headline);
   font-weight: 600;
   color: var(--color-neutral-900);
@@ -266,12 +430,78 @@ html[data-theme-mode='dark'] {
 
 .public-content h2,
 .tiptap-editor h2 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 .public-content h3,
 .tiptap-editor h3 {
-  font-size: 1.05rem;
+  font-size: 1.2rem;
+}
+
+.public-content img,
+.tiptap-editor img {
+  height: auto;
+  max-width: 100%;
+  border-radius: 0.375rem;
+}
+
+.public-content img.content-img,
+.tiptap-editor img.content-img {
+  display: block;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.public-content img.content-img-sm,
+.tiptap-editor img.content-img-sm {
+  width: 12rem;
+}
+
+.public-content img.content-img-md,
+.tiptap-editor img.content-img-md {
+  width: 24rem;
+}
+
+.public-content img.content-img-lg,
+.tiptap-editor img.content-img-lg {
+  width: 36rem;
+}
+
+.public-content img.content-img-full,
+.tiptap-editor img.content-img-full {
+  width: 100%;
+}
+
+.public-content img.content-img-left,
+.tiptap-editor img.content-img-left {
+  margin-right: auto;
+}
+
+.public-content img.content-img-center,
+.tiptap-editor img.content-img-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.public-content img.content-img-right,
+.tiptap-editor img.content-img-right {
+  margin-left: auto;
+}
+
+@media (min-width: 768px) {
+  .public-content img.content-img-left:not(.content-img-full),
+  .tiptap-editor img.content-img-left:not(.content-img-full) {
+    float: left;
+    margin-right: 1.25rem;
+    margin-left: 0;
+  }
+
+  .public-content img.content-img-right:not(.content-img-full),
+  .tiptap-editor img.content-img-right:not(.content-img-full) {
+    float: right;
+    margin-left: 1.25rem;
+    margin-right: 0;
+  }
 }
 
 .public-content blockquote {
@@ -305,12 +535,6 @@ html[data-theme-mode='dark'] {
 
 .public-content a {
   color: var(--color-primary);
-}
-
-.public-content img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 0.375rem;
 }
 
 .public-content table,

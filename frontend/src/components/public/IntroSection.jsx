@@ -2,10 +2,10 @@ import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { introParagraphs } from '../../helpers/landingBlocks';
 
-export function IntroSection({ landing, unitSlug }) {
+export function IntroSection({ landing, unitSlug, profileUrl }) {
   if (!landing?.introTitle && !landing?.introBody) return null;
   const [lead, ...rest] = introParagraphs(landing.introBody);
-  const profilHref = ROUTES.unitPage(unitSlug, 'profil');
+  const profilHref = profileUrl || ROUTES.unitPage(unitSlug, 'profil');
 
   return (
     <section className="bg-mist py-24 md:py-32">

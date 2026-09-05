@@ -8,6 +8,8 @@ import { UnitDirectory } from './UnitDirectory';
 import { IntroSection } from './IntroSection';
 import { ClosingCta } from './ClosingCta';
 import { LandingMotion } from './LandingMotion';
+import { BuilderRender } from '../../builder/BuilderRender';
+import { hasBuilder } from '../../helpers/builderDocument';
 import { unitPathSlug } from '../../helpers/publicHref';
 import { usePublicAgendas, usePublicPosts } from '../../hooks/useCms';
 import { usePublicUnits } from '../../hooks/useUnits';
@@ -34,7 +36,16 @@ export function UnitHomeSections({ unit }) {
     agendas.data?.items?.length || 0,
     unitsQuery.data?.items?.length || 0,
     landing?.gallery?.length || 0,
+    landing?.builder?.content?.length || 0,
   ].join('-');
+
+  if (hasBuilder(landing?.builder)) {
+    return (
+      <LandingMotion key={unit.id} revision={motionRevision}>
+        <BuilderRender document={landing.builder} unit={unit} unitSlug={pathSlug} />
+      </LandingMotion>
+    );
+  }
 
   return (
     <LandingMotion key={unit.id} revision={motionRevision}>

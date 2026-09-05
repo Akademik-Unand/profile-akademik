@@ -1,47 +1,37 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
-import Image from '@tiptap/extension-image';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
-import { TextStyleKit } from '@tiptap/extension-text-style';
-import Highlight from '@tiptap/extension-highlight';
-import Subscript from '@tiptap/extension-subscript';
-import Superscript from '@tiptap/extension-superscript';
 import { TableKit } from '@tiptap/extension-table';
 import Placeholder from '@tiptap/extension-placeholder';
 import Typography from '@tiptap/extension-typography';
-import TaskList from '@tiptap/extension-task-list';
-import TaskItem from '@tiptap/extension-task-item';
 import { useEffect } from 'react';
+import { imageClass } from '../../helpers/contentImage';
+import { ContentImage } from './editor/ContentImage';
 import { EditorToolbar } from './editor/EditorToolbar';
+import { ImageToolbar } from './editor/ImageToolbar';
 
 /**
- * Editor Tiptap lengkap (gaya pengolah kata) untuk halaman dan pengumuman.
+ * Editor artikel ringkas: judul, format dasar, tautan, gambar, dan tabel.
  */
-export function RichTextEditor({ value = '', onChange, onInsertImage }) {
+export function RichTextEditor({ value = '', onChange, onRequestImage }) {
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
-      StarterKit.configure({ heading: { levels: [1, 2, 3, 4, 5, 6] } }),
-      TextStyleKit,
+      StarterKit.configure({ heading: { levels: [2, 3] } }),
       Underline,
-      Highlight.configure({ multicolor: true }),
-      Subscript,
-      Superscript,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       Link.configure({ openOnClick: false, autolink: true }),
-      Image,
+      ContentImage,
       TableKit.configure({ table: { resizable: true } }),
-      TaskList,
-      TaskItem.configure({ nested: true }),
       Typography,
       Placeholder.configure({ placeholder: 'Tulis konten di sini...' }),
     ],
     content: value || '',
     editorProps: {
       attributes: {
-        class: 'tiptap-editor min-h-64 px-3 py-2 outline-none',
+        class: 'tiptap-editor min-h-80 px-6 py-5 outline-none',
       },
     },
     onUpdate: ({ editor: instance }) => {
@@ -57,11 +47,27 @@ export function RichTextEditor({ value = '', onChange, onInsertImage }) {
     }
   }, [value, editor]);
 
-  if (!editor) return <div className="skeleton h-64 w-full" />;
+  if (!editor) return <div className="skeleton h-80 w-full" />;
+
+  function requestImage() {
+    if (!onRequestImage) {
+      const src = window.prompt('URL gambar', 'https://');
+      if (src) editor.chain().focus().setImage({ src, class: imageClass() }).run();
+      return;
+    }
+    onRequestImage((attrs) => {
+      editor.chain().focus().setImage({
+        src: attrs.src,
+        alt: attrs.alt || '',
+        class: imageClass(),
+      }).run();
+    });
+  }
 
   return (
     <div className="overflow-hidden rounded-md border border-base-300 bg-base-100">
-      <EditorToolbar editor={editor} onInsertImage={onInsertImage} />
+      <EditorToolbar editor={editor} onRequestImage={requestImage} />
+      {editor.isActive('image') ? <ImageToolbar editor={editor} /> : null}
       <EditorContent editor={editor} />
     </div>
   );

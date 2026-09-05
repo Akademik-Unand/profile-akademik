@@ -12,10 +12,10 @@ export const NAVIGATION_MENU = [
     title: 'Situs',
     items: [
       {
-        label: 'Landing page',
-        path: ROUTES.adminLanding,
-        icon: 'mdi:image-text',
-        permission: { action: 'read', subject: 'Landing' },
+        label: 'Halaman',
+        path: ROUTES.adminPages,
+        icon: 'mdi:file-document-outline',
+        permission: { action: 'create', subject: 'Page' },
       },
       {
         label: 'Menu',
@@ -36,21 +36,9 @@ export const NAVIGATION_MENU = [
     title: 'Konten',
     items: [
       {
-        label: 'Unit',
-        path: ROUTES.adminUnits,
-        icon: 'mdi:office-building-outline',
-        permission: { action: 'manage', subject: 'Unit' },
-      },
-      {
-        label: 'Halaman',
-        path: ROUTES.adminPages,
-        icon: 'mdi:file-document-outline',
-        permission: { action: 'create', subject: 'Page' },
-      },
-      {
-        label: 'Pengumuman',
+        label: 'Artikel',
         path: ROUTES.adminPosts,
-        icon: 'mdi:bullhorn-outline',
+        icon: 'mdi:newspaper-variant-outline',
         permission: { action: 'create', subject: 'Post' },
       },
       {
@@ -59,17 +47,17 @@ export const NAVIGATION_MENU = [
         icon: 'mdi:tag-outline',
         permission: { action: 'create', subject: 'PostCategory' },
       },
+    ],
+  },
+  {
+    type: 'group',
+    title: 'Unit',
+    items: [
       {
-        label: 'Struktur organisasi',
-        path: ROUTES.adminOrganization,
-        icon: 'mdi:account-group-outline',
-        permission: { action: 'create', subject: 'OrganizationMember' },
-      },
-      {
-        label: 'Agenda',
-        path: ROUTES.adminAgendas,
-        icon: 'mdi:calendar-month-outline',
-        permission: { action: 'create', subject: 'Agenda' },
+        label: 'Daftar unit',
+        path: ROUTES.adminUnits,
+        icon: 'mdi:office-building-outline',
+        permission: { action: 'manage', subject: 'Unit' },
       },
     ],
   },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -27,6 +27,7 @@ export default function PostFormPage() {
   const [mediaOpen, setMediaOpen] = useState(false);
   const [mediaMode, setMediaMode] = useState('content');
   const [pickedCoverUrl, setPickedCoverUrl] = useState('');
+  const insertImage = useRef(null);
   const coverUrl = pickedCoverUrl || query.data?.cover?.url || '';
 
   const {
@@ -95,8 +96,8 @@ export default function PostFormPage() {
   return (
     <div className="w-full">
       <PageHeader
-        title={isEdit ? 'Edit pengumuman' : 'Tambah pengumuman'}
-        breadcrumbs={[{ label: 'Pengumuman', path: ROUTES.adminPosts }, { label: isEdit ? 'Edit' : 'Tambah' }]}
+        title={isEdit ? 'Edit konten' : 'Tambah konten'}
+        breadcrumbs={[{ label: 'Artikel', path: ROUTES.adminPosts }, { label: isEdit ? 'Edit' : 'Tambah' }]}
       />
       <form className="card bg-base-100 shadow-sm" onSubmit={handleSubmit(onSubmit)}>
         <div className="card-body gap-2">
@@ -116,9 +117,9 @@ export default function PostFormPage() {
           <AdminField label="Slug" error={errors.slug?.message}>
             <input className="input w-full" {...register('slug')} />
           </AdminField>
-          <AdminField label="Kategori">
+          <AdminField label="Kategori" error={errors.categoryId?.message}>
             <select className="select w-full" {...register('categoryId')}>
-              <option value="">Tanpa kategori</option>
+              <option value="">Pilih kategori</option>
               {(categories?.items || []).map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.name}
@@ -137,7 +138,8 @@ export default function PostFormPage() {
                 <RichTextEditor
                   value={field.value}
                   onChange={field.onChange}
-                  onInsertImage={() => {
+                  onRequestImage={(insert) => {
+                    insertImage.current = insert;
                     setMediaMode('content');
                     setMediaOpen(true);
                   }}
@@ -194,7 +196,9 @@ export default function PostFormPage() {
           if (mediaMode === 'cover') {
             setValue('coverMediaId', media.id);
             setPickedCoverUrl(media.url);
-          } else setValue('content', `${watch('content') || ''}<p><img src="${media.url}" alt="${media.altText || ''}" /></p>`);
+          } else {
+            insertImage.current?.({ src: media.url, alt: media.altText || '' });
+          }
         }}
       />
     </div>

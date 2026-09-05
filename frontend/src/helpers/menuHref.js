@@ -11,5 +11,11 @@ export function menuHref(item, unitSlug) {
     const base = publicHref(unitSlug, 'posts');
     return category ? `${base}?category=${category}` : base;
   }
+  if (item.type === 'archive') {
+    const kind = item.archiveKind || item.externalUrl;
+    if (kind === 'posts') return publicHref(unitSlug, 'posts');
+    if (kind === 'organization') return publicHref(unitSlug, 'org');
+    if (kind === 'agenda') return publicHref(unitSlug, 'agenda');
+  }
   return '#';
 }

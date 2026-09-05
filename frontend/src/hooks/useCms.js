@@ -47,6 +47,8 @@ export function usePublicPage(unitSlug, pageSlug) {
     queryFn: async () => (await pagesService.getPublic(unitSlug, pageSlug)).data,
     enabled: Boolean(unitSlug && pageSlug),
     retry: false,
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 }
 
@@ -91,6 +93,14 @@ export function usePublicPost(unitSlug, postSlug) {
     queryFn: async () => (await postsService.getPublic(unitSlug, postSlug)).data,
     enabled: Boolean(unitSlug && postSlug),
     retry: false,
+  });
+}
+
+export function usePublicCategories(unitSlug) {
+  return useQuery({
+    queryKey: ['categories', 'public', unitSlug],
+    queryFn: async () => (await categoriesService.getPublic(unitSlug)).data,
+    enabled: Boolean(unitSlug),
   });
 }
 

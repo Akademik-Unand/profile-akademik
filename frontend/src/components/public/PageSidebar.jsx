@@ -48,10 +48,10 @@ function ContactPanel({ unit }) {
 /**
  * Sidebar halaman dalam: menu saudara + kontak unit.
  */
-export function PageSidebar({ unit, unitSlug, group, items = [], currentHref, pageSlug }) {
+export function PageSidebar({ unit, unitSlug, group, items = [], currentHref, pageSlug, force = false }) {
   const hasRelated = items.length > 0;
   const contact = hasUnitContact(unit);
-  if (!hasRelated && !contact) return null;
+  if (!force && !hasRelated && !contact) return null;
 
   return (
     <aside className="space-y-6 lg:sticky lg:top-24">
@@ -80,6 +80,11 @@ export function PageSidebar({ unit, unitSlug, group, items = [], currentHref, pa
               );
             })}
           </ul>
+        </nav>
+      ) : force ? (
+        <nav className="rounded-md border border-neutral-200 bg-surface p-5" aria-label="Menu terkait">
+          <p className="font-headline text-sm text-neutral-900">Menu terkait</p>
+          <p className="mt-3 text-sm text-neutral-500">Belum ada menu di samping halaman ini. Tambah tautan di Menu.</p>
         </nav>
       ) : null}
       {contact ? <ContactPanel unit={unit} /> : null}

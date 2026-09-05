@@ -4,7 +4,7 @@ import { SeoHead } from '../components/public/SeoHead';
 import { resolvePageSeo } from '../helpers/seo';
 import { usePublicUnits } from '../hooks/useUnits';
 
-export function PublicLayout({ children, unit, menus = [], transparent = false, seo }) {
+export function PublicLayout({ children, unit, menus = [], transparent = false, seo, preview = false }) {
   const unitsQuery = usePublicUnits({ limit: 50, sortBy: 'name', sortOrder: 'asc' });
   const units = unitsQuery.data?.items || [];
   const themeStyle = unit?.themeColor
@@ -17,9 +17,9 @@ export function PublicLayout({ children, unit, menus = [], transparent = false, 
   return (
     <div className="min-h-svh bg-base font-body text-neutral-800" style={themeStyle}>
       <SeoHead title={tags.title} description={tags.description} keywords={tags.keywords} />
-      <SiteHeader unit={unit} menus={headerMenus} units={units} transparent={transparent} />
+      {preview ? null : <SiteHeader unit={unit} menus={headerMenus} units={units} transparent={transparent} />}
       <main>{children}</main>
-      <SiteFooter unit={unit} menus={footerMenus} units={units} />
+      {preview ? null : <SiteFooter unit={unit} menus={footerMenus} units={units} />}
     </div>
   );
 }

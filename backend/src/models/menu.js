@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       parentId: { type: DataTypes.INTEGER, allowNull: true },
       label: { type: DataTypes.STRING, allowNull: false },
       type: {
-        type: DataTypes.ENUM('page', 'post_category', 'external_url'),
+        type: DataTypes.ENUM('page', 'post_category', 'external_url', 'archive'),
         allowNull: false,
       },
       targetPageId: { type: DataTypes.INTEGER, allowNull: true },

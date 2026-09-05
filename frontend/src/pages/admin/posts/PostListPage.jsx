@@ -48,13 +48,13 @@ export default function PostListPage() {
   return (
     <div>
       <PageHeader
-        title="Pengumuman"
-        subtitle="Berita dan pengumuman unit."
-        breadcrumbs={[{ label: 'Pengumuman' }]}
+        title="Artikel"
+        subtitle="Satu tipe artikel. Kategori bisa ditambah, tampilan daftar diatur di halaman Pengumuman."
+        breadcrumbs={[{ label: 'Artikel' }]}
         action={
           <Can I="create" a="Post">
             <Link to={ROUTES.adminPostNew} className="btn btn-primary">
-              Tambah pengumuman
+              Tambah artikel
             </Link>
           </Can>
         }
@@ -69,7 +69,7 @@ export default function PostListPage() {
         sortOrder={table.sortOrder}
         search={table.searchInput}
         isLoading={isLoading}
-        emptyMessage="Belum ada pengumuman"
+        emptyMessage="Belum ada konten"
         onSearchChange={table.setSearch}
         onPageChange={table.setPage}
         onLimitChange={table.setLimit}
@@ -115,7 +115,7 @@ export default function PostListPage() {
       />
       <ConfirmDeleteModal
         open={confirmDelete.isOpen}
-        title="Hapus pengumuman"
+        title="Hapus konten"
         message={confirmDelete.target ? `Hapus “${confirmDelete.target.title}”?` : undefined}
         isSubmitting={confirmDelete.isSubmitting}
         onConfirm={confirmDelete.confirm}

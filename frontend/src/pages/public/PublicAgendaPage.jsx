@@ -28,7 +28,8 @@ export default function PublicAgendaPage() {
         title="Agenda kegiatan"
         description="Jadwal kegiatan akademik dan kemahasiswaan yang dipublikasikan unit ini."
         crumbs={[{ label: 'Agenda' }]}
-        wide
+        chrome="shell"
+        sidebar="auto"
       >
         <AgendaList items={agendaQuery.data?.items || []} />
       </InnerPageShell>

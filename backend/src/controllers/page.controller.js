@@ -1,4 +1,5 @@
 const pageService = require('../services/page.service');
+const { withBuilderFallback } = require('../helpers/builderDocument');
 const { success } = require('../utils/apiResponse');
 const asyncHandler = require('../middlewares/asyncHandler');
 
@@ -9,7 +10,7 @@ const listAdmin = asyncHandler(async (req, res) => {
 
 const getById = asyncHandler(async (req, res) => {
   const page = await pageService.getById(Number(req.params.id), req.user);
-  return success(res, { message: 'Detail halaman', data: { page } });
+  return success(res, { message: 'Detail halaman', data: { page: withBuilderFallback(page) } });
 });
 
 const getPublic = asyncHandler(async (req, res) => {
@@ -19,7 +20,7 @@ const getPublic = asyncHandler(async (req, res) => {
 
 const create = asyncHandler(async (req, res) => {
   const page = await pageService.create(req.body, req.user);
-  return success(res, { message: 'Halaman berhasil dibuat', statusCode: 201, data: { page } });
+  return success(res, { message: 'Halaman berhasil dibuat', statusCode: 201, data: { page: withBuilderFallback(page) } });
 });
 
 const update = asyncHandler(async (req, res) => {

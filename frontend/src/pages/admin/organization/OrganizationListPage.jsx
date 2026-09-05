@@ -9,10 +9,16 @@ import { AdminField } from '../../../components/admin/AdminField';
 import { UnitSelect } from '../../../components/admin/UnitSelect';
 import { Icon } from '../../../components/ui/Icon';
 import { organizationFormSchema } from '../../../validations/cms.schema';
-import { useAdminOrganization, useCreateOrganizationMember, useDeleteOrganizationMember } from '../../../hooks/useCms';
+import {
+  useAdminOrganization,
+  useCreateOrganizationMember,
+  useDeleteOrganizationMember,
+  useUpdateOrganizationMember,
+} from '../../../hooks/useCms';
 import { useCmsTableParams } from '../../../hooks/useCmsTableParams';
 import { useConfirmDelete } from '../../../hooks/useConfirmDelete';
 import { payloadUnitId, unitScopeName } from '../../../helpers/cmsDisplay';
+import { ROUTES } from '../../../constants/routes';
 import { useAuthStore } from '../../../store/auth.store';
 
 export default function OrganizationListPage() {
@@ -20,10 +26,12 @@ export default function OrganizationListPage() {
   const table = useCmsTableParams();
   const { data, isLoading } = useAdminOrganization({ ...table.params, sortBy: 'order', sortOrder: 'asc' });
   const createItem = useCreateOrganizationMember();
+  const updateItem = useUpdateOrganizationMember();
   const remove = useDeleteOrganizationMember();
   const confirmDelete = useConfirmDelete({ onConfirm: (row) => remove.mutateAsync(row.id) });
   const [mediaOpen, setMediaOpen] = useState(false);
   const [photoUrl, setPhotoUrl] = useState('');
+  const [editingId, setEditingId] = useState(null);
   const {
     register,
     handleSubmit,
@@ -36,6 +44,25 @@ export default function OrganizationListPage() {
     defaultValues: { name: '', title: '', unitId: user?.role === 'superadmin' ? '' : user?.units?.[0]?.id, parentId: '', order: 0, photoMediaId: '' },
   });
 
+  function startEdit(row) {
+    setEditingId(row.id);
+    setPhotoUrl(row.photo?.url || '');
+    reset({
+      name: row.name,
+      title: row.title,
+      unitId: row.unitId ?? '',
+      parentId: row.parentId || '',
+      order: row.order || 0,
+      photoMediaId: row.photoMediaId || '',
+    });
+  }
+
+  function cancelEdit() {
+    setEditingId(null);
+    setPhotoUrl('');
+    reset({ name: '', title: '', unitId: user?.role === 'superadmin' ? '' : user?.units?.[0]?.id, parentId: '', order: 0, photoMediaId: '' });
+  }
+
   const columns = [
     { key: 'name', header: 'Nama', sortable: true },
     { key: 'title', header: 'Jabatan', sortable: true },
@@ -44,27 +71,37 @@ export default function OrganizationListPage() {
       key: 'actions',
       header: 'Aksi',
       render: (row) => (
-        <button type="button" className="btn btn-ghost btn-square btn-sm" onClick={() => confirmDelete.open(row)} aria-label="Hapus">
-          <Icon icon="mdi:trash-can-outline" className="size-4" />
-        </button>
+        <div className="flex gap-1">
+          <button type="button" className="btn btn-ghost btn-square btn-sm" onClick={() => startEdit(row)} aria-label="Edit">
+            <Icon icon="mdi:pencil-outline" className="size-4" />
+          </button>
+          <button type="button" className="btn btn-ghost btn-square btn-sm" onClick={() => confirmDelete.open(row)} aria-label="Hapus">
+            <Icon icon="mdi:trash-can-outline" className="size-4" />
+          </button>
+        </div>
       ),
     },
   ];
 
   return (
     <div>
-      <PageHeader title="Struktur organisasi" subtitle="Pejabat dan staf per unit." breadcrumbs={[{ label: 'Struktur organisasi' }]} />
+      <PageHeader
+        title="Anggota organisasi"
+        subtitle="Data jabatan yang ditampilkan blok Struktur organisasi di halaman arsip."
+        breadcrumbs={[{ label: 'Halaman', path: ROUTES.adminPages }, { label: 'Anggota organisasi' }]}
+      />
       <form
         className="card mb-6 bg-base-100 shadow-sm"
         onSubmit={handleSubmit(async (values) => {
-          await createItem.mutateAsync({
+          const payload = {
             ...values,
             unitId: payloadUnitId(values.unitId),
             parentId: values.parentId || null,
             photoMediaId: values.photoMediaId || null,
-          });
-          reset({ name: '', title: '', unitId: values.unitId, parentId: '', order: 0, photoMediaId: '' });
-          setPhotoUrl('');
+          };
+          if (editingId) await updateItem.mutateAsync({ id: editingId, payload });
+          else await createItem.mutateAsync(payload);
+          cancelEdit();
         })}
       >
         <div className="card-body grid gap-2 md:grid-cols-2">
@@ -74,11 +111,13 @@ export default function OrganizationListPage() {
           <AdminField label="Atasan">
             <select className="select w-full" {...register('parentId')}>
               <option value="">Tanpa atasan</option>
-              {(data?.items || []).map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
+              {(data?.items || [])
+                .filter((item) => item.id !== editingId)
+                .map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
             </select>
           </AdminField>
           <AdminField label="Nama" error={errors.name?.message}>
@@ -95,10 +134,15 @@ export default function OrganizationListPage() {
               </button>
             </div>
           </AdminField>
-          <div className="md:col-span-2">
-            <button type="submit" className="btn btn-primary btn-sm" disabled={createItem.isPending}>
-              Tambah anggota
+          <div className="flex gap-2 md:col-span-2">
+            <button type="submit" className="btn btn-primary btn-sm" disabled={createItem.isPending || updateItem.isPending}>
+              {editingId ? 'Simpan anggota' : 'Tambah anggota'}
             </button>
+            {editingId ? (
+              <button type="button" className="btn btn-ghost btn-sm" onClick={cancelEdit}>
+                Batal
+              </button>
+            ) : null}
           </div>
         </div>
       </form>

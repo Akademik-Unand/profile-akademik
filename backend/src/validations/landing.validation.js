@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { BLOCK_TYPES } = require('../constants/builder');
 
 const current = {
   query: Joi.object({
@@ -60,6 +61,26 @@ const upsert = {
     slides: Joi.array().items(slide),
     services: Joi.array().items(service),
     gallery: Joi.array().items(galleryItem),
+    builder: Joi.object({
+      root: Joi.object().unknown(true),
+      content: Joi.array().items(
+        Joi.object({
+          type: Joi.string().valid(...BLOCK_TYPES).required(),
+          props: Joi.object().unknown(true).default({}),
+        }).unknown(true),
+      ),
+      zones: Joi.object().pattern(
+        Joi.string(),
+        Joi.array().items(
+          Joi.object({
+            type: Joi.string().valid(...BLOCK_TYPES).required(),
+            props: Joi.object().unknown(true).default({}),
+          }).unknown(true),
+        ),
+      ),
+    })
+      .unknown(true)
+      .allow(null),
   }),
 };
 

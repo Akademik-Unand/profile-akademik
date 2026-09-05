@@ -9,7 +9,22 @@ const {
   findPublishedBySlug,
 } = require('../helpers/unitScope');
 const { assertUniqueInUnit } = require('../helpers/uniqueScope');
+const { sanitizeHtml } = require('../helpers/sanitizeHtml');
+const { normalizeBuilder, layoutFromBuilder, htmlToBuilder, withBuilderFallback } = require('../helpers/builderDocument');
 const logger = require('../utils/logger');
+
+function prepareBuilderPayload(payload) {
+  const next = { ...payload };
+  if (next.content) next.content = sanitizeHtml(next.content);
+  if (next.builder) {
+    next.builder = normalizeBuilder(next.builder);
+    next.layout = layoutFromBuilder(next.builder, next.layout);
+  } else if (next.content) {
+    next.builder = htmlToBuilder(next.content, next.layout);
+    next.layout = layoutFromBuilder(next.builder, next.layout);
+  }
+  return next;
+}
 
 function uniqueOrThrow(error, message) {
   if (error.name === 'SequelizeUniqueConstraintError') {
@@ -33,14 +48,14 @@ async function listAdmin(query, currentUser) {
     order,
     limit,
     offset,
-    include: [{ model: Unit, as: 'unit', attributes: ['id', 'name', 'slug'] }],
+    include: [{ model: Unit, as: 'unit', attributes: ['id', 'name', 'slug', 'isDefault'] }],
   });
   return { items: rows, page, limit, total: count };
 }
 
 async function getById(id, currentUser) {
   const page = await Page.findByPk(id, {
-    include: [{ model: Unit, as: 'unit', attributes: ['id', 'name', 'slug'] }],
+    include: [{ model: Unit, as: 'unit', attributes: ['id', 'name', 'slug', 'isDefault'] }],
   });
   if (!page) throw new AppError('Halaman tidak ditemukan', 404);
   assertUnitAccess(currentUser, page.unitId);
@@ -52,7 +67,7 @@ async function getPublicBySlug(unitSlug, pageSlug) {
   if (!unit) throw new AppError('Unit tidak ditemukan', 404);
   const page = await findPublishedBySlug(Page, unit, pageSlug);
   if (!page) throw new AppError('Halaman tidak ditemukan', 404);
-  return { unit, page };
+  return { unit, page: withBuilderFallback(page) };
 }
 
 async function create(payload, currentUser) {
@@ -64,10 +79,11 @@ async function create(payload, currentUser) {
   });
   const status = payload.status || 'draft';
   try {
+    const prepared = prepareBuilderPayload(payload);
     const page = await Page.create({
-      ...payload,
+      ...prepared,
       unitId,
-      content: payload.content || '',
+      content: prepared.content || '',
       status,
       createdBy: currentUser.id,
       publishedAt: status === 'published' ? payload.publishedAt || new Date() : payload.publishedAt || null,
@@ -100,9 +116,10 @@ async function update(id, payload, currentUser) {
         ? payload.publishedAt
         : page.publishedAt;
   try {
-    await page.update({ ...payload, publishedAt });
+    const prepared = prepareBuilderPayload(payload);
+    await page.update({ ...prepared, publishedAt });
     logger.info({ pageId: page.id }, 'Page updated');
-    return page;
+    return withBuilderFallback(page);
   } catch (error) {
     uniqueOrThrow(error, 'Slug halaman sudah dipakai di lingkup ini');
   }

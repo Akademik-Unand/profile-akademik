@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DataTable } from '../../../components/common/DataTable';
@@ -7,7 +8,7 @@ import { AdminField } from '../../../components/admin/AdminField';
 import { UnitSelect } from '../../../components/admin/UnitSelect';
 import { Icon } from '../../../components/ui/Icon';
 import { categoryFormSchema } from '../../../validations/cms.schema';
-import { useAdminCategories, useCreateCategory, useDeleteCategory } from '../../../hooks/useCms';
+import { useAdminCategories, useCreateCategory, useDeleteCategory, useUpdateCategory } from '../../../hooks/useCms';
 import { useCmsTableParams } from '../../../hooks/useCmsTableParams';
 import { useConfirmDelete } from '../../../hooks/useConfirmDelete';
 import { slugify } from '../../../utils/slugify';
@@ -19,8 +20,10 @@ export default function CategoryListPage() {
   const table = useCmsTableParams();
   const { data, isLoading } = useAdminCategories(table.params);
   const createItem = useCreateCategory();
+  const updateItem = useUpdateCategory();
   const remove = useDeleteCategory();
   const confirmDelete = useConfirmDelete({ onConfirm: (row) => remove.mutateAsync(row.id) });
+  const [editingId, setEditingId] = useState(null);
   const {
     register,
     handleSubmit,
@@ -33,6 +36,16 @@ export default function CategoryListPage() {
     defaultValues: { name: '', slug: '', unitId: user?.role === 'superadmin' ? '' : user?.units?.[0]?.id },
   });
 
+  function startEdit(row) {
+    setEditingId(row.id);
+    reset({ name: row.name, slug: row.slug, unitId: row.unitId ?? '' });
+  }
+
+  function cancelEdit() {
+    setEditingId(null);
+    reset({ name: '', slug: '', unitId: user?.role === 'superadmin' ? '' : user?.units?.[0]?.id });
+  }
+
   const columns = [
     { key: 'name', header: 'Nama', sortable: true },
     { key: 'slug', header: 'Slug', sortable: true },
@@ -41,21 +54,28 @@ export default function CategoryListPage() {
       key: 'actions',
       header: 'Aksi',
       render: (row) => (
-        <button type="button" className="btn btn-ghost btn-square btn-sm" onClick={() => confirmDelete.open(row)} aria-label="Hapus">
-          <Icon icon="mdi:trash-can-outline" className="size-4" />
-        </button>
+        <div className="flex gap-1">
+          <button type="button" className="btn btn-ghost btn-square btn-sm" onClick={() => startEdit(row)} aria-label="Edit">
+            <Icon icon="mdi:pencil-outline" className="size-4" />
+          </button>
+          <button type="button" className="btn btn-ghost btn-square btn-sm" onClick={() => confirmDelete.open(row)} aria-label="Hapus">
+            <Icon icon="mdi:trash-can-outline" className="size-4" />
+          </button>
+        </div>
       ),
     },
   ];
 
   return (
     <div>
-      <PageHeader title="Kategori" subtitle="Kategori pengumuman per unit." breadcrumbs={[{ label: 'Kategori' }]} />
+      <PageHeader title="Kategori" subtitle="Kategori konten per unit. Dipakai filter arsip dan umpan." breadcrumbs={[{ label: 'Kategori' }]} />
       <form
         className="card mb-6 bg-base-100 shadow-sm"
         onSubmit={handleSubmit(async (values) => {
-          await createItem.mutateAsync({ ...values, unitId: payloadUnitId(values.unitId) });
-          reset({ name: '', slug: '', unitId: values.unitId });
+          const payload = { ...values, unitId: payloadUnitId(values.unitId) };
+          if (editingId) await updateItem.mutateAsync({ id: editingId, payload });
+          else await createItem.mutateAsync(payload);
+          cancelEdit();
         })}
       >
         <div className="card-body grid gap-2 md:grid-cols-3">
@@ -71,10 +91,15 @@ export default function CategoryListPage() {
           <AdminField label="Slug" error={errors.slug?.message}>
             <input className="input w-full" {...register('slug')} />
           </AdminField>
-          <div className="md:col-span-3">
-            <button type="submit" className="btn btn-primary btn-sm" disabled={createItem.isPending}>
-              Tambah kategori
+          <div className="flex gap-2 md:col-span-3">
+            <button type="submit" className="btn btn-primary btn-sm" disabled={createItem.isPending || updateItem.isPending}>
+              {editingId ? 'Simpan kategori' : 'Tambah kategori'}
             </button>
+            {editingId ? (
+              <button type="button" className="btn btn-ghost btn-sm" onClick={cancelEdit}>
+                Batal
+              </button>
+            ) : null}
           </div>
         </div>
       </form>

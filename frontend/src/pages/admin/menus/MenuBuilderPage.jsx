@@ -117,15 +117,34 @@ export default function MenuBuilderPage() {
             <input className="input w-full" {...register('label')} />
           </AdminField>
           <AdminField label="Tipe">
-            <select className="select w-full" {...register('type')}>
+            <select
+              className="select w-full"
+              {...register('type', {
+                onChange: (event) => {
+                  if (event.target.value === 'archive' && !['posts', 'organization', 'agenda'].includes(watch('externalUrl'))) {
+                    setValue('externalUrl', 'posts');
+                  }
+                },
+              })}
+            >
               <option value="external_url">URL</option>
               <option value="page">Halaman</option>
-              <option value="post_category">Kategori pengumuman</option>
+              <option value="post_category">Kategori konten</option>
+              <option value="archive">Arsip situs</option>
             </select>
           </AdminField>
           {type === 'external_url' ? (
             <AdminField label="URL">
               <input className="input w-full" {...register('externalUrl')} />
+            </AdminField>
+          ) : null}
+          {type === 'archive' ? (
+            <AdminField label="Arsip">
+              <select className="select w-full" {...register('externalUrl')}>
+                <option value="posts">Konten / pengumuman</option>
+                <option value="organization">Organisasi</option>
+                <option value="agenda">Agenda</option>
+              </select>
             </AdminField>
           ) : null}
           {type === 'page' ? (

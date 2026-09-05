@@ -43,7 +43,7 @@ export const menuFormSchema = z.object({
   unitId: optionalUnitId,
   parentId: z.union([z.coerce.number().int().positive(), z.literal('')]).optional(),
   label: z.string().min(1, 'Label wajib diisi').max(120),
-  type: z.enum(['page', 'post_category', 'external_url']),
+  type: z.enum(['page', 'post_category', 'external_url', 'archive']),
   targetPageId: z.union([z.coerce.number().int().positive(), z.literal('')]).optional(),
   targetCategoryId: z.union([z.coerce.number().int().positive(), z.literal('')]).optional(),
   externalUrl: z.string().max(500).optional().or(z.literal('')),

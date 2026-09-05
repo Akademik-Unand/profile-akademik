@@ -7,6 +7,11 @@ const listAdmin = asyncHandler(async (req, res) => {
   return success(res, { message: 'Daftar kategori', data });
 });
 
+const listPublic = asyncHandler(async (req, res) => {
+  const data = await postCategoryService.listPublic(req.params.slug);
+  return success(res, { message: 'Daftar kategori', data });
+});
+
 const getById = asyncHandler(async (req, res) => {
   const category = await postCategoryService.getById(Number(req.params.id), req.user);
   return success(res, { message: 'Detail kategori', data: { category } });
@@ -27,4 +32,4 @@ const remove = asyncHandler(async (req, res) => {
   return success(res, { message: 'Kategori berhasil dihapus', data: null });
 });
 
-module.exports = { listAdmin, getById, create, update, remove };
+module.exports = { listAdmin, listPublic, getById, create, update, remove };

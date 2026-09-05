@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { BLOCK_TYPES, LAYOUT_CHROME, LAYOUT_SIDEBAR, BACKGROUNDS } = require('../constants/builder');
 
 const slug = Joi.string()
   .pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
@@ -29,12 +30,32 @@ const publicParams = {
   }),
 };
 
+const builderItem = Joi.object({
+  type: Joi.string().valid(...BLOCK_TYPES).required(),
+  props: Joi.object().unknown(true).default({}),
+}).unknown(true);
+
+const builderDocument = Joi.object({
+  root: Joi.object().unknown(true),
+  content: Joi.array().items(builderItem).default([]),
+  zones: Joi.object().pattern(Joi.string(), Joi.array().items(builderItem)),
+}).unknown(true);
+
+const layout = Joi.object({
+  chrome: Joi.string().valid(...LAYOUT_CHROME),
+  sidebar: Joi.string().valid(...LAYOUT_SIDEBAR),
+  showHero: Joi.boolean(),
+  background: Joi.string().valid(...BACKGROUNDS),
+}).unknown(true);
+
 const create = {
   body: Joi.object({
     unitId: Joi.number().integer().positive().allow(null),
     slug: slug.required(),
     title: Joi.string().max(200).required(),
     content: Joi.string().allow('').default(''),
+    builder: builderDocument.allow(null),
+    layout,
     status: Joi.string().valid('draft', 'published').default('draft'),
     publishedAt: Joi.date().iso().allow(null),
     metaTitle: Joi.string().max(160).allow('', null),
@@ -50,6 +71,8 @@ const update = {
     slug,
     title: Joi.string().max(200),
     content: Joi.string().allow(''),
+    builder: builderDocument.allow(null),
+    layout,
     status: Joi.string().valid('draft', 'published'),
     publishedAt: Joi.date().iso().allow(null),
     metaTitle: Joi.string().max(160).allow('', null),

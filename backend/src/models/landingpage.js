@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       unitsTitle: { type: DataTypes.STRING, allowNull: true },
       contactTitle: { type: DataTypes.STRING, allowNull: true },
       contactBody: { type: DataTypes.TEXT, allowNull: true },
+      builder: { type: DataTypes.JSON, allowNull: true },
       showNews: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
       showAgenda: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
       showServices: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },

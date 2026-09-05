@@ -1,7 +1,19 @@
 const { LandingPage, LandingSlide, LandingService, LandingGalleryItem, Media, sequelize } = require('../models');
 const AppError = require('../utils/AppError');
 const { applyUnitScope, applyListUnitFilter, assertUnitAccess, resolveCreateUnitId } = require('../helpers/unitScope');
+const { hasBuilder, normalizeBuilder, landingToBuilder, sanitizeBuilder } = require('../helpers/builderDocument');
 const logger = require('../utils/logger');
+
+function withLandingBuilder(landing) {
+  if (!landing) return landing;
+  const json = typeof landing.toJSON === 'function' ? landing.toJSON() : { ...landing };
+  if (hasBuilder(json.builder)) {
+    json.builder = sanitizeBuilder(json.builder);
+  } else {
+    json.builder = landingToBuilder(json);
+  }
+  return json;
+}
 
 const MEDIA = { model: Media, as: 'media', attributes: ['id', 'url', 'thumbnailUrl', 'altText'] };
 
@@ -88,15 +100,16 @@ async function replaceRows(Model, landingPageId, items, mapRow, transaction) {
 async function getCurrent(query, currentUser) {
   const unitId = resolveScope(query, currentUser);
   const landing = await findLanding({ unitId });
-  return landing || emptyLanding(unitId);
+  return withLandingBuilder(landing || emptyLanding(unitId));
 }
 
 async function getPublicForUnit(unit) {
   if (unit.isDefault) {
     const main = await findLanding({ unitId: null });
-    if (main) return main;
+    if (main) return withLandingBuilder(main);
   }
-  return findLanding({ unitId: unit.id });
+  const own = await findLanding({ unitId: unit.id });
+  return withLandingBuilder(own);
 }
 
 async function listAdmin(query, currentUser) {
@@ -136,6 +149,7 @@ async function upsert(payload, currentUser) {
       showUnits: payload.showUnits ?? unitId == null,
       showGallery: payload.showGallery ?? true,
     };
+    if (payload.builder) fields.builder = normalizeBuilder(payload.builder);
 
     let landing = await LandingPage.findOne({ where: { unitId }, transaction });
     if (landing) {
@@ -199,7 +213,7 @@ async function upsert(payload, currentUser) {
 
   const saved = await findLanding({ id });
   if (!saved) throw new AppError('Landing page gagal disimpan', 500);
-  return saved;
+  return withLandingBuilder(saved);
 }
 
 module.exports = { getCurrent, getPublicForUnit, listAdmin, upsert, emptyLanding, DEFAULTS };

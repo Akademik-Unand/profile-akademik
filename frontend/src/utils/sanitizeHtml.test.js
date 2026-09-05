@@ -16,4 +16,10 @@ describe('sanitizeHtml', () => {
   it('keeps inline font size from the editor', () => {
     expect(sanitizeHtml('<p><span style="font-size: 24px">Halo</span></p>')).toContain('font-size: 24px');
   });
+
+  it('keeps image size and align classes', () => {
+    expect(sanitizeHtml('<img src="/x.jpg" class="content-img content-img-sm content-img-left" alt="">')).toContain(
+      'content-img-sm',
+    );
+  });
 });

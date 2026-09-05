@@ -26,4 +26,12 @@ describe('menuHref', () => {
       '/akademik/pengumuman?category=pengumuman',
     );
   });
+
+  it('builds archive paths without using external_url', () => {
+    expect(menuHref({ type: 'archive', externalUrl: 'posts' }, '')).toBe('/pengumuman');
+    expect(menuHref({ type: 'archive', archiveKind: 'organization' }, 'perpustakaan')).toBe(
+      '/perpustakaan/organisasi',
+    );
+    expect(menuHref({ type: 'archive', externalUrl: 'agenda' }, '')).toBe('/agenda');
+  });
 });

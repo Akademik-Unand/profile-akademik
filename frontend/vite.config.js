@@ -21,6 +21,6 @@ export default defineConfig({
     setupFiles: './src/test/setup.js',
   },
   optimizeDeps: {
-    include: ['apexcharts', 'react-apexcharts', 'aos', 'gsap', 'gsap/ScrollTrigger'],
+    include: ['apexcharts', 'react-apexcharts', 'aos', 'gsap', 'gsap/ScrollTrigger', '@puckeditor/core'],
   },
 });

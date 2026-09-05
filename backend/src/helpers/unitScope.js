@@ -69,8 +69,13 @@ async function findPublishedBySlug(Model, unit, slug, options = {}) {
   const where = { slug, status: 'published', ...(options.where || {}) };
   const query = { include: options.include };
   if (unit.isDefault) {
-    const main = await Model.findOne({ ...query, where: { ...where, unitId: null } });
-    if (main) return main;
+    const rows = await Model.findAll({
+      ...query,
+      where: { ...where, [Op.or]: [{ unitId: null }, { unitId: unit.id }] },
+      order: [['updatedAt', 'DESC']],
+      limit: 1,
+    });
+    return rows[0] || null;
   }
   return Model.findOne({ ...query, where: { ...where, unitId: unit.id } });
 }

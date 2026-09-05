@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { applyUnitScope, resolveCreateUnitId, assertUnitAccess, contentWhereForUnit } = require('../../../src/helpers/unitScope');
+const { applyUnitScope, resolveCreateUnitId, assertUnitAccess, contentWhereForUnit, findPublishedBySlug } = require('../../../src/helpers/unitScope');
 const AppError = require('../../../src/utils/AppError');
 
 describe('unitScope', () => {
@@ -38,5 +38,12 @@ describe('unitScope', () => {
 
   it('scopes a regular unit to its own id', () => {
     expect(contentWhereForUnit({ id: 9, isDefault: false })).toEqual({ unitId: 9 });
+  });
+
+  it('picks the newest published twin for the default unit', async () => {
+    const newer = { id: 4, updatedAt: '2026-09-05T12:00:00.000Z' };
+    const Model = { findAll: jest.fn().mockResolvedValue([newer]) };
+    await expect(findPublishedBySlug(Model, { id: 1, isDefault: true }, 'agenda')).resolves.toBe(newer);
+    expect(Model.findAll).toHaveBeenCalled();
   });
 });

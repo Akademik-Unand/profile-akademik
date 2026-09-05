@@ -25,6 +25,7 @@ export const categoriesService = {
   create: (payload) => apiClient.post('/admin/post-categories', payload),
   update: (id, payload) => apiClient.put(`/admin/post-categories/${id}`, payload),
   remove: (id) => apiClient.delete(`/admin/post-categories/${id}`),
+  getPublic: (unitSlug) => apiClient.get(`/units/${unitSlug}/post-categories`),
 };
 
 export const mediaService = {

@@ -5,6 +5,7 @@ const postController = require('../controllers/post.controller');
 const menuController = require('../controllers/menu.controller');
 const organizationMemberController = require('../controllers/organizationMember.controller');
 const agendaController = require('../controllers/agenda.controller');
+const postCategoryController = require('../controllers/postCategory.controller');
 const validate = require('../middlewares/validate');
 const unitValidation = require('../validations/unit.validation');
 const pageValidation = require('../validations/page.validation');
@@ -32,6 +33,7 @@ router.get('/:slug/pages/:pageSlug', validate(pageValidation.publicParams), page
  *     summary: Daftar pengumuman publik
  */
 router.get('/:slug/posts', validate(postValidation.publicListParams), postController.listPublic);
+router.get('/:slug/post-categories', validate(unitValidation.slugParam), postCategoryController.listPublic);
 
 /**
  * @openapi

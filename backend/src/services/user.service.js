@@ -4,7 +4,7 @@ const buildQueryOptions = require('../helpers/buildQueryOptions');
 const { hashPassword } = require('../utils/auth');
 const logger = require('../utils/logger');
 
-const UNIT_INCLUDE = { association: 'units', through: { attributes: [] }, attributes: ['id', 'name', 'slug'] };
+const UNIT_INCLUDE = { association: 'units', through: { attributes: [] }, attributes: ['id', 'name', 'slug', 'isDefault'] };
 
 function toSafe(user) {
   const json = user.toJSON();

@@ -17,6 +17,8 @@ module.exports = (sequelize, DataTypes) => {
       slug: { type: DataTypes.STRING, allowNull: false },
       title: { type: DataTypes.STRING, allowNull: false },
       content: { type: DataTypes.TEXT, allowNull: false, defaultValue: '' },
+      builder: { type: DataTypes.JSON, allowNull: true },
+      layout: { type: DataTypes.JSON, allowNull: true },
       status: {
         type: DataTypes.ENUM('draft', 'published'),
         allowNull: false,

@@ -50,9 +50,9 @@ export default function AgendaListPage() {
   return (
     <div>
       <PageHeader
-        title="Agenda"
-        subtitle="Kegiatan akademik unit."
-        breadcrumbs={[{ label: 'Agenda' }]}
+        title="Item agenda"
+        subtitle="Data tanggal yang ditampilkan blok Arsip agenda di halaman arsip."
+        breadcrumbs={[{ label: 'Halaman', path: ROUTES.adminPages }, { label: 'Item agenda' }]}
         action={
           <Can I="create" a="Agenda">
             <Link to={ROUTES.adminAgendaNew} className="btn btn-primary">
