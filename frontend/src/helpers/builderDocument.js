@@ -104,11 +104,49 @@ export function landingToBuilder(landing = {}) {
 
   if (landing.showNews !== false) {
     push('NewsFeed', { title: landing.newsTitle || 'Berita utama', limit: 6, featuredOnly: false });
-    push('Announcements', { title: landing.announcementsTitle || 'Pengumuman', limit: 6, category: 'pengumuman' });
   }
 
-  if (landing.showAgenda !== false) {
-    push('AgendaList', { title: landing.agendaTitle || 'Agenda', limit: 4 });
+  if (landing.showNews !== false || landing.showAgenda !== false) {
+    const columnA = landing.showNews !== false
+      ? [{
+          type: 'Announcements',
+          props: {
+            id: blockId('announcements'),
+            title: landing.announcementsTitle || 'Pengumuman',
+            limit: 6,
+            category: 'pengumuman',
+          },
+        }]
+      : [];
+    const columnB = landing.showAgenda !== false
+      ? [{
+          type: 'AgendaList',
+          props: {
+            id: blockId('agenda'),
+            title: landing.agendaTitle || 'Agenda',
+            limit: 4,
+          },
+        }]
+      : [];
+
+    push('Section', {
+      background: 'mist',
+      padding: 'md',
+      margin: 'none',
+      width: 'wide',
+      align: 'left',
+      content: [{
+        type: 'Columns',
+        props: {
+          id: blockId('columns'),
+          count: 2,
+          gap: 'lg',
+          columnA,
+          columnB,
+          columnC: [],
+        },
+      }],
+    });
   }
 
   if (landing.showGallery !== false && (landing.gallery || []).length) {

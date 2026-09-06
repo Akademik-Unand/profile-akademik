@@ -13,11 +13,12 @@ import { showEditorChrome } from '../../helpers/builderChrome';
 import { BlockPlaceholder } from './placeholder';
 import { DataBlockFrame } from './DataBlockFrame';
 import { DataBlockState } from './DataBlockState';
+import { motionAttrs } from '../../helpers/blockMotion';
 import { DataLoop } from './DataLoop';
 import { SAMPLE_AGENDAS } from '../../constants/dataDisplay';
 import { AgendaList } from '../../components/public/AgendaList';
 
-export function HeroBlock({ eyebrow, title, subtitle, ctaLabel, ctaUrl, slides = [] }) {
+export function HeroBlock({ eyebrow, title, subtitle, ctaLabel, ctaUrl, slides = [], motion }) {
   const { apiSlug, pathSlug, ready } = useBuilderSlugs();
   const featured = usePublicPosts(apiSlug, {
     limit: 5,
@@ -41,42 +42,46 @@ export function HeroBlock({ eyebrow, title, subtitle, ctaLabel, ctaUrl, slides =
     })),
   };
   const posts = ready ? featured.data?.items || [] : [];
-  return <HeroCarousel landing={landing} posts={posts} unitSlug={pathSlug} overlap={false} />;
+  return (
+    <div {...motionAttrs(motion)}>
+      <HeroCarousel landing={landing} posts={posts} unitSlug={pathSlug} overlap={false} />
+    </div>
+  );
 }
 
-export function ServicesBlock({ title, items = [], box, puck }) {
+export function ServicesBlock({ title, items = [], box, motion, puck }) {
   const { pathSlug } = useBuilderSlugs();
   if (!items.length && showEditorChrome(puck)) {
     return (
-      <DataBlockFrame box={box} puck={puck}>
+      <DataBlockFrame box={box} motion={motion} puck={puck}>
         <BlockPlaceholder label="Layanan — tambah tautan di panel kanan" />
       </DataBlockFrame>
     );
   }
   return (
-    <DataBlockFrame box={box} puck={puck} className="bg-base pb-8">
+    <DataBlockFrame box={box} motion={motion} puck={puck} className="bg-base pb-8">
       <ServiceTiles landing={{ servicesTitle: title, services: items }} unitSlug={pathSlug} />
     </DataBlockFrame>
   );
 }
 
-export function IntroBlock({ title, body, profileUrl, box, puck }) {
+export function IntroBlock({ title, body, profileUrl, box, motion, puck }) {
   const { pathSlug } = useBuilderSlugs();
   if (!title && !body) {
     return (
-      <DataBlockFrame box={box} puck={puck}>
+      <DataBlockFrame box={box} motion={motion} puck={puck}>
         <BlockPlaceholder label="Pengantar — isi judul di panel kanan" />
       </DataBlockFrame>
     );
   }
   return (
-    <DataBlockFrame box={box} puck={puck}>
+    <DataBlockFrame box={box} motion={motion} puck={puck}>
       <IntroSection landing={{ introTitle: title, introBody: body }} unitSlug={pathSlug} profileUrl={profileUrl} />
     </DataBlockFrame>
   );
 }
 
-export function NewsFeedBlock({ title, limit, featuredOnly, box, puck }) {
+export function NewsFeedBlock({ title, limit, featuredOnly, box, motion, puck }) {
   const { apiSlug, pathSlug, ready } = useBuilderSlugs();
   const query = usePublicPosts(apiSlug, {
     limit: Number(limit) || 6,
@@ -85,7 +90,7 @@ export function NewsFeedBlock({ title, limit, featuredOnly, box, puck }) {
     sortOrder: 'desc',
   });
   return (
-    <DataBlockFrame box={box} puck={puck}>
+    <DataBlockFrame box={box} motion={motion} puck={puck}>
       <DataBlockState puck={puck} ready={ready} query={query} emptyLabel="Berita — belum ada konten terbit di unit ini">
         <FeaturedNews posts={query.data?.items || []} unitSlug={pathSlug} title={title} />
       </DataBlockState>
@@ -93,7 +98,7 @@ export function NewsFeedBlock({ title, limit, featuredOnly, box, puck }) {
   );
 }
 
-export function AnnouncementsBlock({ title, limit, category, box, puck }) {
+export function AnnouncementsBlock({ title, limit, category, box, motion, puck }) {
   const { apiSlug, pathSlug, ready } = useBuilderSlugs();
   const query = usePublicPosts(apiSlug, {
     limit: Number(limit) || 6,
@@ -102,7 +107,7 @@ export function AnnouncementsBlock({ title, limit, category, box, puck }) {
     sortOrder: 'desc',
   });
   return (
-    <DataBlockFrame box={box} puck={puck}>
+    <DataBlockFrame box={box} motion={motion} puck={puck}>
       <DataBlockState
         puck={puck}
         ready={ready}
@@ -115,7 +120,7 @@ export function AnnouncementsBlock({ title, limit, category, box, puck }) {
   );
 }
 
-export function AgendaListBlock({ id, item, title, limit, display, box, puck }) {
+export function AgendaListBlock({ id, item, title, limit, display, box, motion, puck }) {
   const { apiSlug, pathSlug, ready } = useBuilderSlugs();
   const query = usePublicAgendas(apiSlug, {
     limit: Number(limit) || 4,
@@ -124,7 +129,7 @@ export function AgendaListBlock({ id, item, title, limit, display, box, puck }) 
   });
   const items = query.data?.items || [];
   return (
-    <DataBlockFrame box={box} puck={puck}>
+    <DataBlockFrame box={box} motion={motion} puck={puck}>
       <DataBlockState
         puck={puck}
         ready={ready}
@@ -158,11 +163,11 @@ export function AgendaListBlock({ id, item, title, limit, display, box, puck }) 
   );
 }
 
-export function UnitDirectoryBlock({ title, box, puck }) {
+export function UnitDirectoryBlock({ title, box, motion, puck }) {
   const query = usePublicUnits({ limit: 50, sortBy: 'name', sortOrder: 'asc' });
   const units = (query.data?.items || []).filter((item) => !item.isDefault);
   return (
-    <DataBlockFrame box={box} puck={puck}>
+    <DataBlockFrame box={box} motion={motion} puck={puck}>
       <DataBlockState puck={puck} ready query={query} items={units} emptyLabel="Daftar unit — belum ada unit di bawah situs ini">
         <UnitDirectory units={query.data?.items || []} title={title} />
       </DataBlockState>
@@ -170,10 +175,10 @@ export function UnitDirectoryBlock({ title, box, puck }) {
   );
 }
 
-export function ClosingCtaBlock({ title, body, ctaLabel, ctaUrl, box, puck }) {
+export function ClosingCtaBlock({ title, body, ctaLabel, ctaUrl, box, motion, puck }) {
   const { unit, pathSlug } = useBuilderSlugs();
   return (
-    <DataBlockFrame box={box} puck={puck}>
+    <DataBlockFrame box={box} motion={motion} puck={puck}>
       <ClosingCta
         unit={unit}
         unitSlug={pathSlug}

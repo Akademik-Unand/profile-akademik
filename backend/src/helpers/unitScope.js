@@ -25,7 +25,11 @@ function applyListUnitFilter(extraWhere, query, currentUser) {
     if (isSuperadmin(currentUser)) extraWhere.unitId = null;
     return extraWhere;
   }
-  if (query.unitId) extraWhere.unitId = Number(query.unitId);
+  if (query.unitId) {
+    const unitId = Number(query.unitId);
+    assertUnitAccess(currentUser, unitId);
+    extraWhere.unitId = unitId;
+  }
   return extraWhere;
 }
 

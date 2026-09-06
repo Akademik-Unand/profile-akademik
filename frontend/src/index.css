@@ -133,6 +133,10 @@ html {
     transform: none !important;
     transition: none !important;
   }
+
+  #admin-app .builder-canvas .builder-motion-play {
+    animation: none !important;
+  }
 }
 
 body {
@@ -346,10 +350,134 @@ html[data-theme-mode='dark'] {
   font-family: 'DM Sans', system-ui, sans-serif;
 }
 
-#admin-app .builder-canvas [data-aos] {
+#admin-app .builder-canvas [data-aos]:not(.builder-motion-play) {
   opacity: 1 !important;
   transform: none !important;
   pointer-events: auto !important;
+}
+
+#admin-app .builder-canvas .builder-motion-play {
+  animation-duration: var(--builder-motion-ms, 700ms);
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+
+#admin-app .builder-canvas .builder-motion-play[data-builder-motion='fade'] {
+  animation-name: builder-motion-fade;
+}
+
+#admin-app .builder-canvas .builder-motion-play[data-builder-motion='fade-up'] {
+  animation-name: builder-motion-fade-up;
+}
+
+#admin-app .builder-canvas .builder-motion-play[data-builder-motion='fade-down'] {
+  animation-name: builder-motion-fade-down;
+}
+
+#admin-app .builder-canvas .builder-motion-play[data-builder-motion='fade-left'] {
+  animation-name: builder-motion-fade-left;
+}
+
+#admin-app .builder-canvas .builder-motion-play[data-builder-motion='fade-right'] {
+  animation-name: builder-motion-fade-right;
+}
+
+#admin-app .builder-canvas .builder-motion-play[data-builder-motion='zoom-in'] {
+  animation-name: builder-motion-zoom-in;
+}
+
+#admin-app .builder-canvas .builder-motion-play[data-builder-motion='zoom-out'] {
+  animation-name: builder-motion-zoom-out;
+}
+
+#admin-app .builder-canvas .builder-motion-play[data-builder-motion='flip-up'] {
+  animation-name: builder-motion-flip-up;
+}
+
+@keyframes builder-motion-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes builder-motion-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes builder-motion-fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes builder-motion-fade-left {
+  from {
+    opacity: 0;
+    transform: translateX(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes builder-motion-fade-right {
+  from {
+    opacity: 0;
+    transform: translateX(-1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes builder-motion-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes builder-motion-zoom-out {
+  from {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes builder-motion-flip-up {
+  from {
+    opacity: 0;
+    transform: perspective(40rem) rotateX(18deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 #admin-app .builder-canvas {

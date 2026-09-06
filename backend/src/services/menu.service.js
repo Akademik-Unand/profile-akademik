@@ -1,4 +1,4 @@
-const { Menu, Page, PostCategory, Unit } = require('../models');
+const { Menu, Page, PostCategory, ContentType, Unit } = require('../models');
 const AppError = require('../utils/AppError');
 const { applyUnitScope, applyListUnitFilter, assertUnitAccess, resolveCreateUnitId, contentWhereForUnit } = require('../helpers/unitScope');
 const buildMenuTree = require('../helpers/menuTree');
@@ -7,7 +7,16 @@ const logger = require('../utils/logger');
 const INCLUDES = [
   { model: Page, as: 'targetPage', attributes: ['id', 'slug', 'title', 'status'] },
   { model: PostCategory, as: 'targetCategory', attributes: ['id', 'slug', 'name'] },
+  { model: ContentType, as: 'targetContentType', attributes: ['id', 'key', 'name', 'unitId', 'activeVersion'] },
 ];
+
+async function assertTargetContentType(payload, unitId) {
+  if (payload.type !== 'dynamic_content') return;
+  if (!payload.targetContentTypeId) throw new AppError('Jenis Dynamic Site Data wajib dipilih', 422);
+  const target = await ContentType.findByPk(payload.targetContentTypeId);
+  if (!target) throw new AppError('Jenis Dynamic Site Data tidak ditemukan', 422);
+  if (target.unitId !== unitId) throw new AppError('Jenis Dynamic Site Data harus berada di unit yang sama', 422);
+}
 
 async function listAdmin(query, currentUser) {
   const extraWhere = applyListUnitFilter(applyUnitScope({}, currentUser), query, currentUser);
@@ -58,6 +67,7 @@ async function getById(id, currentUser) {
 
 async function create(payload, currentUser) {
   const unitId = resolveCreateUnitId(currentUser, payload.unitId);
+  await assertTargetContentType(payload, unitId);
   const menu = await Menu.create({ ...payload, unitId, order: payload.order ?? 0 });
   logger.info({ menuId: menu.id, unitId }, 'Menu created');
   return menu;
@@ -68,6 +78,12 @@ async function update(id, payload, currentUser) {
   if (Object.prototype.hasOwnProperty.call(payload, 'unitId')) {
     assertUnitAccess(currentUser, payload.unitId);
   }
+  const nextUnitId = Object.prototype.hasOwnProperty.call(payload, 'unitId') ? payload.unitId : menu.unitId;
+  const nextType = payload.type || menu.type;
+  const nextTargetContentTypeId = Object.prototype.hasOwnProperty.call(payload, 'targetContentTypeId')
+    ? payload.targetContentTypeId
+    : menu.targetContentTypeId;
+  await assertTargetContentType({ type: nextType, targetContentTypeId: nextTargetContentTypeId }, nextUnitId);
   await menu.update(payload);
   logger.info({ menuId: menu.id }, 'Menu updated');
   return menu;

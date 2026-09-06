@@ -207,6 +207,9 @@ export default function UnitFormPage() {
             <textarea className="textarea w-full" rows={3} {...register('description')} />
           </AdminField>
           <AdminField label="Warna tema" error={errors.themeColor?.message}>
+            <p className="mb-2 text-xs text-base-content/60">
+              Dipakai di pita navbar, tautan aktif, banner judul, dan footer situs unit.
+            </p>
             <input type="color" className="input h-10 w-full" {...register('themeColor')} />
           </AdminField>
           <AdminField label="Template" error={errors.templateKey?.message}>

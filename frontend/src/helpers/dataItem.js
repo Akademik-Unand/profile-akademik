@@ -3,6 +3,7 @@ import { DATA_FIELD_KEYS } from '../constants/dataFields';
 import { SAMPLE_AGENDAS, SAMPLE_POSTS } from '../constants/dataDisplay';
 import { formatDateId } from './cmsDisplay';
 import { ROUTES } from '../constants/routes';
+import { readDynamicValue, safeFormat } from './dynamicContent';
 
 export function sanitizeDataFieldKey(value) {
   return DATA_FIELD_KEYS.includes(value) ? value : 'title';
@@ -46,7 +47,12 @@ export function readTemplateItems(slot, doc, id) {
   return Array.isArray(fromDoc) ? fromDoc.filter((row) => row?.type) : [];
 }
 
-export function resolveDataField(item, field, { source, pathSlug } = {}) {
+export function resolveDataField(item, field, { source, pathSlug, formatter } = {}) {
+  if (source?.startsWith('dynamic:')) {
+    if (field === 'link') return { type: 'link', href: ROUTES.unitDataEntry(pathSlug, source.slice(8), item?.slug), text: item?.title || 'Buka' };
+    const value = field === 'title' ? item?.title : readDynamicValue(item, field);
+    return { type: 'text', text: safeFormat(value, formatter || 'text') };
+  }
   const key = sanitizeDataFieldKey(field);
   if (!item) return { type: 'empty', text: '', href: '', src: '' };
 

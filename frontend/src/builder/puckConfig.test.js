@@ -19,10 +19,18 @@ describe('puckConfig box defaults', () => {
     expect(puckConfig.components.Button.defaultProps.box.width.unit).toBe('auto');
     expect(puckConfig.components.Card.defaultProps.box.borderStyle).toBe('solid');
     expect(puckConfig.components.AgendaArchive.defaultProps.display.layout).toBe('list');
+    expect(puckConfig.components.Gallery.fields.items.arrayFields.featured.label).toBe('Foto unggulan');
     expect(puckConfig.components.PostArchive.defaultProps.display.cover).toBe(false);
     expect(puckConfig.components.Heading.defaultProps.bind).toBe('');
     expect(puckConfig.components.DataField.defaultProps.field).toBe('title');
     expect(puckConfig.components.AgendaArchive.defaultProps.item).toEqual([]);
+    expect(puckConfig.components.Heading.defaultProps.motion).toEqual({
+      effect: 'none',
+      delay: 0,
+      duration: 700,
+      once: true,
+    });
+    expect(puckConfig.components.Section.fields.motion.label).toBe('Animasi');
   });
 });
 

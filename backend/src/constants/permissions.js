@@ -11,6 +11,8 @@ const SUBJECTS = {
   'organization-member': { casl: 'OrganizationMember', group: 'konten', label: 'Struktur organisasi' },
   agenda: { casl: 'Agenda', group: 'konten', label: 'Agenda' },
   landing: { casl: 'Landing', group: 'situs', label: 'Landing page' },
+  'content-type': { casl: 'ContentType', group: 'konten', label: 'Jenis data situs' },
+  'content-entry': { casl: 'ContentEntry', group: 'konten', label: 'Entri data situs' },
   user: { casl: 'User', group: 'iam', label: 'Pengguna' },
   permission: { casl: 'Permission', group: 'iam', label: 'Permission' },
   role: { casl: 'Role', group: 'iam', label: 'Peran' },
@@ -28,6 +30,8 @@ const CMS_KEYS = [
   'organization-member',
   'agenda',
   'landing',
+  'content-type',
+  'content-entry',
 ];
 
 function toPermission(key, action, extra = {}) {

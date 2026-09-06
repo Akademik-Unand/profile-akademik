@@ -11,6 +11,9 @@ export function menuHref(item, unitSlug) {
     const base = publicHref(unitSlug, 'posts');
     return category ? `${base}?category=${category}` : base;
   }
+  if (item.type === 'dynamic_content' && item.targetContentType?.key) {
+    return publicHref(unitSlug, 'data', item.targetContentType.key);
+  }
   if (item.type === 'archive') {
     const kind = item.archiveKind || item.externalUrl;
     if (kind === 'posts') return publicHref(unitSlug, 'posts');

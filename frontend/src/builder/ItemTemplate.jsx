@@ -8,9 +8,9 @@ import { itemRenders } from './itemTemplateConfig';
 export function toSlotRender(items) {
   if (!Array.isArray(items) || !items.some((row) => row?.type)) return undefined;
 
-  function SlotRender({ as: Comp = 'div', className, style }) {
+  function SlotRender({ as: Comp = 'div', className, style, ...rest }) {
     return (
-      <Comp className={className} style={style}>
+      <Comp className={className} style={style} {...rest}>
         <ItemTemplate items={items} />
       </Comp>
     );

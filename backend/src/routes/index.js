@@ -12,6 +12,7 @@ const adminAgendaRoutes = require('./admin/agenda.route');
 const adminUserRoutes = require('./admin/user.route');
 const adminPermissionRoutes = require('./admin/permission.route');
 const adminLandingRoutes = require('./admin/landing.route');
+const adminDynamicContentRoutes = require('./admin/dynamicContent.route');
 
 const router = express.Router();
 
@@ -28,5 +29,6 @@ router.use('/admin/agendas', adminAgendaRoutes);
 router.use('/admin/users', adminUserRoutes);
 router.use('/admin/permissions', adminPermissionRoutes);
 router.use('/admin/landings', adminLandingRoutes);
+router.use('/admin/content-types', adminDynamicContentRoutes);
 
 module.exports = router;

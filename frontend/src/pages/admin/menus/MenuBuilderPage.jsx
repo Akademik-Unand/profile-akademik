@@ -10,6 +10,7 @@ import { menuFormSchema } from '../../../validations/cms.schema';
 import { flattenMenuTree } from '../../../helpers/menuTree';
 import { useAdminCategories, useAdminMenus, useAdminPages, useCreateMenu, useDeleteMenu, useReorderMenus } from '../../../hooks/useCms';
 import { useConfirmDelete } from '../../../hooks/useConfirmDelete';
+import { useContentTypes } from '../../../hooks/useContentTypes';
 import { payloadUnitId, unitScopeName } from '../../../helpers/cmsDisplay';
 import { useAuthStore } from '../../../store/auth.store';
 
@@ -45,11 +46,14 @@ export default function MenuBuilderPage() {
       parentId: '',
       targetPageId: '',
       targetCategoryId: '',
+      targetContentTypeId: '',
     },
   });
 
   const type = watch('type');
   const location = watch('location');
+  const selectedUnitId = payloadUnitId(watch('unitId'));
+  const { data: contentTypes } = useContentTypes({ limit: 100, unitId: selectedUnitId ?? undefined, site: selectedUnitId === null ? 'main' : undefined });
 
   return (
     <div className="grid gap-6 lg:grid-cols-2">
@@ -83,11 +87,12 @@ export default function MenuBuilderPage() {
             parentId: values.parentId || null,
             targetPageId: values.targetPageId || null,
             targetCategoryId: values.targetCategoryId || null,
+            targetContentTypeId: values.targetContentTypeId || null,
             externalUrl: values.externalUrl || null,
             location: values.location,
             order: items.length,
           });
-          reset({ ...values, label: '', externalUrl: '/', targetPageId: '', targetCategoryId: '', parentId: '' });
+          reset({ ...values, label: '', externalUrl: '/', targetPageId: '', targetCategoryId: '', targetContentTypeId: '', parentId: '' });
         })}
       >
         <div className="card-body gap-2">
@@ -131,6 +136,7 @@ export default function MenuBuilderPage() {
               <option value="page">Halaman</option>
               <option value="post_category">Kategori konten</option>
               <option value="archive">Arsip situs</option>
+              <option value="dynamic_content">Dynamic Site Data</option>
             </select>
           </AdminField>
           {type === 'external_url' ? (
@@ -144,6 +150,18 @@ export default function MenuBuilderPage() {
                 <option value="posts">Konten / pengumuman</option>
                 <option value="organization">Organisasi</option>
                 <option value="agenda">Agenda</option>
+              </select>
+            </AdminField>
+          ) : null}
+          {type === 'dynamic_content' ? (
+            <AdminField label="Jenis data" error={errors.targetContentTypeId?.message}>
+              <select className="select w-full" {...register('targetContentTypeId')}>
+                <option value="">Pilih</option>
+                {(contentTypes?.items || []).map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
               </select>
             </AdminField>
           ) : null}

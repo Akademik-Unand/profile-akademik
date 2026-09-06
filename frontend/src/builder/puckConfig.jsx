@@ -13,7 +13,7 @@ import { BAND_PADDING, BUTTON_BORDER, BUTTON_PADDING, BUTTON_VARIANTS, CARD_BORD
 import { AGENDA_DISPLAY_FIELDS, POST_DISPLAY_FIELDS, defaultAgendaDisplay, defaultPostDisplay } from '../constants/dataDisplay';
 import { BUTTON_BIND_OPTIONS, DATA_FIELD_OPTIONS, IMAGE_BIND_OPTIONS, TEXT_BIND_OPTIONS } from '../constants/dataFields';
 import { IMAGE_ALIGN_OPTIONS, IMAGE_SIZE_OPTIONS } from '../helpers/contentImage';
-import { defaultBox, alignField, dataBindField, dataDisplayField, gapSizeField, layoutFields } from './layoutFields';
+import { alignField, dataBindField, dataDisplayField, gapSizeField, layoutDefaults, layoutFields } from './layoutFields';
 import { MediaField } from './fields/MediaField';
 import { RichTextField } from './fields/RichTextField';
 import { PageRoot } from './blocks/PageRoot';
@@ -43,6 +43,7 @@ export const puckConfig = {
         'PostArchive',
         'AgendaArchive',
         'CategoryFeed',
+        'DynamicCollection',
       ],
     },
   },
@@ -83,7 +84,7 @@ export const puckConfig = {
         margin: 'none',
         width: 'wide',
         align: 'left',
-        box: defaultBox({ position: 'relative', padding: SECTION_PADDING }),
+        ...layoutDefaults({ position: 'relative', padding: SECTION_PADDING }),
       },
       render: puckRenders.Section,
     },
@@ -92,7 +93,7 @@ export const puckConfig = {
       fields: { ...slotFields('Card'), ...layoutFields() },
       defaultProps: {
         ...slotDefaults('Card'),
-        box: defaultBox({
+        ...layoutDefaults({
           padding: CARD_PADDING,
           borderWidth: CARD_BORDER.width,
           borderStyle: CARD_BORDER.style,
@@ -109,7 +110,7 @@ export const puckConfig = {
         background: { type: 'select', label: 'Latar tema', options: BACKGROUND_OPTIONS },
         ...layoutFields({ includeColor: false }),
       },
-      defaultProps: { ...slotDefaults('Band'), background: 'mist', box: defaultBox({ padding: BAND_PADDING }) },
+      defaultProps: { ...slotDefaults('Band'), background: 'mist', ...layoutDefaults({ padding: BAND_PADDING }) },
       render: puckRenders.Band,
     },
     Columns: {
@@ -128,7 +129,7 @@ export const puckConfig = {
         gapSize: gapSizeField,
         ...layoutFields({ includeWidth: false }),
       },
-      defaultProps: { ...slotDefaults('Columns'), count: 2, gap: 'md', gapSize: { value: 32, unit: 'px' }, box: defaultBox() },
+      defaultProps: { ...slotDefaults('Columns'), count: 2, gap: 'md', gapSize: { value: 32, unit: 'px' }, ...layoutDefaults() },
       render: puckRenders.Columns,
     },
     Columns3: {
@@ -143,13 +144,13 @@ export const puckConfig = {
         gapSize: gapSizeField,
         ...layoutFields({ includeWidth: false }),
       },
-      defaultProps: { ...slotDefaults('Columns3'), count: 3, gap: 'md', gapSize: { value: 32, unit: 'px' }, box: defaultBox() },
+      defaultProps: { ...slotDefaults('Columns3'), count: 3, gap: 'md', gapSize: { value: 32, unit: 'px' }, ...layoutDefaults() },
       render: puckRenders.Columns3,
     },
     Split: {
       label: BUILDER_BLOCK_LABELS.Split,
       fields: { ...slotFields('Split'), ...layoutFields({ includeWidth: false }) },
-      defaultProps: { ...slotDefaults('Split'), box: defaultBox() },
+      defaultProps: { ...slotDefaults('Split'), ...layoutDefaults() },
       render: puckRenders.Split,
     },
     Spacer: {
@@ -158,13 +159,13 @@ export const puckConfig = {
         size: { type: 'select', label: 'Ukuran', options: PADDING_OPTIONS },
         ...layoutFields({ includeColor: false, includeWidth: false, includeHeight: true }),
       },
-      defaultProps: { size: 'md', box: defaultBox({ width: { value: '', unit: 'auto' }, height: { value: 64, unit: 'px' } }) },
+      defaultProps: { size: 'md', ...layoutDefaults({ width: { value: '', unit: 'auto' }, height: { value: 64, unit: 'px' } }) },
       render: puckRenders.Spacer,
     },
     Divider: {
       label: BUILDER_BLOCK_LABELS.Divider,
       fields: layoutFields({ includeColor: false, includeFont: false, includeHeight: false }),
-      defaultProps: { box: defaultBox({ height: { value: '', unit: 'auto' } }) },
+      defaultProps: { ...layoutDefaults({ height: { value: '', unit: 'auto' } }) },
       render: puckRenders.Divider,
     },
     Heading: {
@@ -176,7 +177,7 @@ export const puckConfig = {
         align: alignField(ALIGN_OPTIONS),
         ...layoutFields({ includeColor: false, includeTextColor: true, includeFont: true }),
       },
-      defaultProps: { title: 'Judul section', bind: '', size: 'xl', align: 'left', box: defaultBox() },
+      defaultProps: { title: 'Judul section', bind: '', size: 'xl', align: 'left', ...layoutDefaults() },
       render: puckRenders.Heading,
     },
     RichText: {
@@ -186,7 +187,7 @@ export const puckConfig = {
         ...dataBindField(TEXT_BIND_OPTIONS),
         ...layoutFields({ includeColor: false, includeTextColor: true, includeFont: true }),
       },
-      defaultProps: { html: '<p>Tulis konten di sini.</p>', bind: '', box: defaultBox() },
+      defaultProps: { html: '<p>Tulis konten di sini.</p>', bind: '', ...layoutDefaults() },
       render: puckRenders.RichText,
     },
     Image: {
@@ -200,7 +201,7 @@ export const puckConfig = {
         align: alignField(IMAGE_ALIGN_OPTIONS),
         ...layoutFields({ includeColor: false }),
       },
-      defaultProps: { image: null, bind: '', caption: '', alt: '', size: 'md', align: 'center', box: defaultBox() },
+      defaultProps: { image: null, bind: '', caption: '', alt: '', size: 'md', align: 'center', ...layoutDefaults() },
       render: puckRenders.Image,
     },
     Gallery: {
@@ -214,12 +215,20 @@ export const puckConfig = {
           arrayFields: {
             image: { type: 'custom', label: 'Gambar', render: MediaField },
             caption: { type: 'text', label: 'Keterangan' },
+            featured: {
+              type: 'radio',
+              label: 'Foto unggulan',
+              options: [
+                { label: 'Ya', value: true },
+                { label: 'Tidak', value: false },
+              ],
+            },
           },
           getItemSummary: (item, index) => item.caption || item.image?.url || `Foto ${index + 1}`,
         },
         ...layoutFields({ includeColor: false }),
       },
-      defaultProps: { title: 'Galeri', subtitle: '', items: [], box: defaultBox() },
+      defaultProps: { title: 'Galeri', subtitle: '', items: [], ...layoutDefaults() },
       render: puckRenders.Gallery,
     },
     Button: {
@@ -238,7 +247,7 @@ export const puckConfig = {
         bind: '',
         align: 'left',
         variant: 'outline',
-        box: defaultBox({
+        ...layoutDefaults({
           padding: BUTTON_PADDING,
           width: { value: '', unit: 'auto' },
           height: { value: '', unit: 'auto' },
@@ -259,7 +268,7 @@ export const puckConfig = {
         ...dataBindField(TEXT_BIND_OPTIONS),
         ...layoutFields({ includeTextColor: true, includeFont: true }),
       },
-      defaultProps: { quote: 'Kalimat kutipan', cite: 'Sumber', bind: '', box: defaultBox() },
+      defaultProps: { quote: 'Kalimat kutipan', cite: 'Sumber', bind: '', ...layoutDefaults() },
       render: puckRenders.Quote,
     },
     Accordion: {
@@ -275,22 +284,36 @@ export const puckConfig = {
         },
         ...layoutFields(),
       },
-      defaultProps: { items: [{ title: 'Pertanyaan', body: '' }], box: defaultBox() },
+      defaultProps: { items: [{ title: 'Pertanyaan', body: '' }], ...layoutDefaults() },
       render: puckRenders.Accordion,
     },
     Embed: {
       label: BUILDER_BLOCK_LABELS.Embed,
       fields: { url: { type: 'text', label: 'URL YouTube' }, ...layoutFields({ includeColor: false }) },
-      defaultProps: { url: '', box: defaultBox() },
+      defaultProps: { url: '', ...layoutDefaults() },
       render: puckRenders.Embed,
+    },
+    DynamicCollection: {
+      label: 'Koleksi dinamis',
+      fields: {
+        typeKey: { type: 'text', label: 'Key jenis data' },
+        title: { type: 'text', label: 'Judul' },
+        limit: { type: 'number', label: 'Jumlah' },
+        ...slotFields('DynamicCollection'),
+        ...layoutFields(),
+      },
+      defaultProps: { typeKey: '', title: '', limit: 6, ...slotDefaults('DynamicCollection'), ...layoutDefaults() },
+      render: puckRenders.DynamicCollection,
     },
     DataField: {
       label: BUILDER_BLOCK_LABELS.DataField,
       fields: {
         field: { type: 'select', label: 'Field data', options: DATA_FIELD_OPTIONS },
+        dynamicField: { type: 'text', label: 'Key field dinamis' },
+        formatter: { type: 'select', label: 'Format aman', options: [{ label: 'Teks', value: 'text' }, { label: 'Huruf besar', value: 'uppercase' }, { label: 'Angka', value: 'number' }, { label: 'Tanggal', value: 'date' }, { label: 'Tanggal & waktu', value: 'datetime' }, { label: 'Ya/Tidak', value: 'boolean' }] },
         ...layoutFields({ includeColor: false, includeTextColor: true, includeFont: true }),
       },
-      defaultProps: { field: 'title', box: defaultBox({ width: { value: '', unit: 'auto' }, padding: { top: 0, right: 0, bottom: 0, left: 0, unit: 'px' } }) },
+      defaultProps: { field: 'title', ...layoutDefaults({ width: { value: '', unit: 'auto' }, padding: { top: 0, right: 0, bottom: 0, left: 0, unit: 'px' } }) },
       render: puckRenders.DataField,
     },
     Stats: {
@@ -306,7 +329,7 @@ export const puckConfig = {
         },
         ...layoutFields(),
       },
-      defaultProps: { items: [{ value: '16', label: 'Fakultas' }], box: defaultBox() },
+      defaultProps: { items: [{ value: '16', label: 'Fakultas' }], ...layoutDefaults() },
       render: puckRenders.Stats,
     },
     Hero: {
@@ -336,7 +359,7 @@ export const puckConfig = {
         ctaLabel: 'Baca selengkapnya',
         ctaUrl: '/pengumuman',
         slides: [],
-        box: defaultBox(),
+        ...layoutDefaults(),
       },
       render: puckRenders.Hero,
     },
@@ -348,7 +371,7 @@ export const puckConfig = {
         profileUrl: { type: 'text', label: 'URL tautan' },
         ...layoutFields(),
       },
-      defaultProps: { title: 'Pengantar', body: 'Tulis pengantar singkat unit di sini.', profileUrl: '/halaman/profil', box: defaultBox() },
+      defaultProps: { title: 'Pengantar', body: 'Tulis pengantar singkat unit di sini.', profileUrl: '/halaman/profil', ...layoutDefaults() },
       render: puckRenders.Intro,
     },
     Services: {
@@ -369,7 +392,7 @@ export const puckConfig = {
       defaultProps: {
         title: 'Layanan',
         items: [{ label: 'Pengumuman', icon: 'mdi:bullhorn-outline', url: '/pengumuman' }],
-        box: defaultBox(),
+        ...layoutDefaults(),
       },
       render: puckRenders.Services,
     },
@@ -388,7 +411,7 @@ export const puckConfig = {
         },
         ...layoutFields(),
       },
-      defaultProps: { title: 'Berita utama', limit: 6, featuredOnly: false, box: defaultBox() },
+      defaultProps: { title: 'Berita utama', limit: 6, featuredOnly: false, ...layoutDefaults() },
       render: puckRenders.NewsFeed,
     },
     Announcements: {
@@ -399,7 +422,7 @@ export const puckConfig = {
         limit: { type: 'number', label: 'Jumlah', min: 1, max: 12 },
         ...layoutFields(),
       },
-      defaultProps: { title: 'Pengumuman', category: 'pengumuman', limit: 6, box: defaultBox() },
+      defaultProps: { title: 'Pengumuman', category: 'pengumuman', limit: 6, ...layoutDefaults() },
       render: puckRenders.Announcements,
     },
     AgendaList: {
@@ -411,13 +434,13 @@ export const puckConfig = {
         ...dataDisplayField(AGENDA_DISPLAY_FIELDS),
         ...layoutFields(),
       },
-      defaultProps: { ...slotDefaults('AgendaList'), title: 'Agenda', limit: 4, display: defaultAgendaDisplay(), box: defaultBox() },
+      defaultProps: { ...slotDefaults('AgendaList'), title: 'Agenda', limit: 4, display: defaultAgendaDisplay(), ...layoutDefaults() },
       render: puckRenders.AgendaList,
     },
     UnitDirectory: {
       label: BUILDER_BLOCK_LABELS.UnitDirectory,
       fields: { title: { type: 'text', label: 'Judul' }, ...layoutFields() },
-      defaultProps: { title: 'Unit', box: defaultBox() },
+      defaultProps: { title: 'Unit', ...layoutDefaults() },
       render: puckRenders.UnitDirectory,
     },
     ClosingCta: {
@@ -434,14 +457,14 @@ export const puckConfig = {
         body: 'Pengumuman, pendaftaran, dan kalender akademik dalam satu portal.',
         ctaLabel: 'Lihat pengumuman',
         ctaUrl: '/pengumuman',
-        box: defaultBox(),
+        ...layoutDefaults(),
       },
       render: puckRenders.ClosingCta,
     },
     OrganizationTree: {
       label: BUILDER_BLOCK_LABELS.OrganizationTree,
       fields: { title: { type: 'text', label: 'Judul' }, ...layoutFields() },
-      defaultProps: { title: 'Struktur organisasi', box: defaultBox() },
+      defaultProps: { title: 'Struktur organisasi', ...layoutDefaults() },
       render: puckRenders.OrganizationTree,
     },
     PostArchive: {
@@ -452,7 +475,7 @@ export const puckConfig = {
         ...dataDisplayField(POST_DISPLAY_FIELDS),
         ...layoutFields(),
       },
-      defaultProps: { ...slotDefaults('PostArchive'), title: 'Arsip konten', display: defaultPostDisplay(), box: defaultBox() },
+      defaultProps: { ...slotDefaults('PostArchive'), title: 'Arsip konten', display: defaultPostDisplay(), ...layoutDefaults() },
       render: puckRenders.PostArchive,
     },
     AgendaArchive: {
@@ -463,7 +486,7 @@ export const puckConfig = {
         ...dataDisplayField(AGENDA_DISPLAY_FIELDS),
         ...layoutFields(),
       },
-      defaultProps: { ...slotDefaults('AgendaArchive'), title: 'Arsip agenda', display: defaultAgendaDisplay(), box: defaultBox() },
+      defaultProps: { ...slotDefaults('AgendaArchive'), title: 'Arsip agenda', display: defaultAgendaDisplay(), ...layoutDefaults() },
       render: puckRenders.AgendaArchive,
     },
     CategoryFeed: {
@@ -491,7 +514,7 @@ export const puckConfig = {
         limit: 6,
         featuredOnly: false,
         display: defaultPostDisplay(),
-        box: defaultBox(),
+        ...layoutDefaults(),
       },
       render: puckRenders.CategoryFeed,
     },

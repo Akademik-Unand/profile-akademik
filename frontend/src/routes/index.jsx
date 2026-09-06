@@ -31,6 +31,12 @@ import LandingBuilderPage from '../pages/admin/landing/LandingBuilderPage';
 import LandingPreviewPage from '../pages/admin/landing/LandingPreviewPage';
 import PagePreviewPage from '../pages/admin/pages/PagePreviewPage';
 import PageBuilderPage from '../pages/admin/pages/PageBuilderPage';
+import ContentTypeListPage from '../pages/admin/contentTypes/ContentTypeListPage';
+import ContentTypeFormPage from '../pages/admin/contentTypes/ContentTypeFormPage';
+import ContentEntryListPage from '../pages/admin/contentTypes/ContentEntryListPage';
+import ContentEntryFormPage from '../pages/admin/contentTypes/ContentEntryFormPage';
+import PublicDynamicArchivePage from '../pages/public/PublicDynamicArchivePage';
+import PublicDynamicDetailPage from '../pages/public/PublicDynamicDetailPage';
 
 function cmsRoute(action, subject, element) {
   return <ProtectedRoute action={action} subject={subject}>{element}</ProtectedRoute>;
@@ -79,6 +85,12 @@ export function AppRoutes() {
         <Route path="posts/new" element={cmsRoute('create', 'Post', <PostFormPage />)} />
         <Route path="posts/:id/edit" element={cmsRoute('create', 'Post', <PostFormPage />)} />
         <Route path="categories" element={cmsRoute('create', 'PostCategory', <CategoryListPage />)} />
+        <Route path="content-types" element={cmsRoute('read', 'ContentType', <ContentTypeListPage />)} />
+        <Route path="content-types/new" element={cmsRoute('create', 'ContentType', <ContentTypeFormPage />)} />
+        <Route path="content-types/:id/edit" element={cmsRoute('update', 'ContentType', <ContentTypeFormPage />)} />
+        <Route path="content-types/:typeId/entries" element={cmsRoute('read', 'ContentEntry', <ContentEntryListPage />)} />
+        <Route path="content-types/:typeId/entries/new" element={cmsRoute('create', 'ContentEntry', <ContentEntryFormPage />)} />
+        <Route path="content-types/:typeId/entries/:id/edit" element={cmsRoute('update', 'ContentEntry', <ContentEntryFormPage />)} />
         <Route path="media" element={cmsRoute('create', 'Media', <MediaLibraryPage />)} />
         <Route path="menus" element={cmsRoute('create', 'Menu', <MenuBuilderPage />)} />
         <Route path="organization" element={cmsRoute('create', 'OrganizationMember', <OrganizationListPage />)} />
@@ -103,6 +115,10 @@ export function AppRoutes() {
       <Route path="/:unitSlug/pengumuman" element={<PublicPagePage pageSlug="pengumuman" Fallback={PublicPostListPage} />} />
       <Route path="/:unitSlug/organisasi" element={<PublicPagePage pageSlug="organisasi" Fallback={PublicOrganizationPage} />} />
       <Route path="/:unitSlug/agenda" element={<PublicPagePage pageSlug="agenda" Fallback={PublicAgendaPage} />} />
+      <Route path="/data/:typeKey/:entrySlug" element={<PublicDynamicDetailPage />} />
+      <Route path="/data/:typeKey" element={<PublicDynamicArchivePage />} />
+      <Route path="/:unitSlug/data/:typeKey/:entrySlug" element={<PublicDynamicDetailPage />} />
+      <Route path="/:unitSlug/data/:typeKey" element={<PublicDynamicArchivePage />} />
       <Route path="/:unitSlug" element={<PublicUnitPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

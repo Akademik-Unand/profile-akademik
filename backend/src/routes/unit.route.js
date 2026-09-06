@@ -11,6 +11,7 @@ const unitValidation = require('../validations/unit.validation');
 const pageValidation = require('../validations/page.validation');
 const postValidation = require('../validations/post.validation');
 const agendaValidation = require('../validations/agenda.validation');
+const dynamicContentRoutes = require('./dynamicContent.route');
 
 const router = express.Router();
 
@@ -70,6 +71,7 @@ router.get('/:slug/organization', validate(unitValidation.slugParam), organizati
  *     summary: Agenda kegiatan publik
  */
 router.get('/:slug/agendas', validate(agendaValidation.publicListParams), agendaController.listPublic);
+router.use('/:slug/data', dynamicContentRoutes);
 
 router.get('/:slug', validate(unitValidation.slugParam), unitController.getBySlug);
 

@@ -122,4 +122,29 @@ function sanitizeBox(box) {
   };
 }
 
-module.exports = { sanitizeBox, sanitizeDisplay };
+const MOTION_EFFECTS = [
+  'none',
+  'fade',
+  'fade-up',
+  'fade-down',
+  'fade-left',
+  'fade-right',
+  'zoom-in',
+  'zoom-out',
+  'flip-up',
+];
+
+function sanitizeMotion(motion) {
+  const fallback = { effect: 'none', delay: 0, duration: 700, once: true };
+  if (!motion || typeof motion !== 'object' || Array.isArray(motion)) return fallback;
+  const delay = sanitizeNumber(motion.delay, 0, 800, 'px');
+  const duration = sanitizeNumber(motion.duration, 400, 1200, 'px');
+  return {
+    effect: MOTION_EFFECTS.includes(motion.effect) ? motion.effect : fallback.effect,
+    delay: delay === '' ? fallback.delay : delay,
+    duration: duration === '' ? fallback.duration : duration,
+    once: motion.once !== false && motion.once !== 'false',
+  };
+}
+
+module.exports = { sanitizeBox, sanitizeDisplay, sanitizeMotion };

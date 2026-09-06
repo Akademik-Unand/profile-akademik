@@ -1,4 +1,4 @@
-const { sanitizeBox, sanitizeDisplay } = require('../../../src/helpers/sanitizeBox');
+const { sanitizeBox, sanitizeDisplay, sanitizeMotion } = require('../../../src/helpers/sanitizeBox');
 
 describe('sanitizeBox', () => {
   it('keeps numeric padding and palette colors', () => {
@@ -92,6 +92,27 @@ describe('sanitizeBox', () => {
   it('keeps auto height instead of collapsing it to 0', () => {
     expect(sanitizeBox({ height: { value: '', unit: 'auto' } }).height).toEqual({ value: '', unit: 'auto' });
     expect(sanitizeBox({ height: { value: 200, unit: 'px' } }).height).toEqual({ value: 200, unit: 'px' });
+  });
+
+  it('keeps a safe motion and drops injection', () => {
+    expect(sanitizeMotion({ effect: 'fade-up', delay: 120, duration: 800, once: false })).toEqual({
+      effect: 'fade-up',
+      delay: 120,
+      duration: 800,
+      once: false,
+    });
+    expect(sanitizeMotion({ effect: 'fade-up; url(x)', delay: 99999, duration: 10, once: 'false' })).toEqual({
+      effect: 'none',
+      delay: 800,
+      duration: 400,
+      once: false,
+    });
+    expect(sanitizeMotion('fade-up; url(x)')).toEqual({
+      effect: 'none',
+      delay: 0,
+      duration: 700,
+      once: true,
+    });
   });
 
   it('returns undefined for non-objects', () => {

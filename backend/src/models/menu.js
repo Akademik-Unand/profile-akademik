@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       Menu.hasMany(models.Menu, { foreignKey: 'parentId', as: 'children' });
       Menu.belongsTo(models.Page, { foreignKey: 'targetPageId', as: 'targetPage' });
       Menu.belongsTo(models.PostCategory, { foreignKey: 'targetCategoryId', as: 'targetCategory' });
+      Menu.belongsTo(models.ContentType, { foreignKey: 'targetContentTypeId', as: 'targetContentType' });
     }
   }
 
@@ -19,11 +20,12 @@ module.exports = (sequelize, DataTypes) => {
       parentId: { type: DataTypes.INTEGER, allowNull: true },
       label: { type: DataTypes.STRING, allowNull: false },
       type: {
-        type: DataTypes.ENUM('page', 'post_category', 'external_url', 'archive'),
+        type: DataTypes.ENUM('page', 'post_category', 'external_url', 'archive', 'dynamic_content'),
         allowNull: false,
       },
       targetPageId: { type: DataTypes.INTEGER, allowNull: true },
       targetCategoryId: { type: DataTypes.INTEGER, allowNull: true },
+      targetContentTypeId: { type: DataTypes.INTEGER, allowNull: true },
       externalUrl: { type: DataTypes.STRING, allowNull: true },
       location: {
         type: DataTypes.ENUM('header', 'footer'),

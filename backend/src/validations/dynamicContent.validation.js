@@ -1,0 +1,17 @@
+const Joi = require('joi');
+const key = Joi.string().pattern(/^[a-z][a-z0-9-]{1,79}$/);
+const slug = Joi.string().pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(120);
+const list = { query: Joi.object({ page: Joi.number().integer().min(1), limit: Joi.number().integer().min(1).max(100), search: Joi.string().allow(''), sortBy: Joi.string().valid('name', 'key', 'title', 'slug', 'status', 'publishedAt', 'createdAt', 'updatedAt'), sortOrder: Joi.string().valid('asc', 'desc'), status: Joi.string().valid('draft', 'published'), unitId: Joi.number().integer().positive(), site: Joi.string().valid('main') }) };
+const typeId = { params: Joi.object({ id: Joi.number().integer().positive().required() }) };
+const typeEntryId = { params: Joi.object({ typeId: Joi.number().integer().positive().required(), id: Joi.number().integer().positive().required() }) };
+const schema = Joi.object({ fields: Joi.array().items(Joi.object().unknown(true)).min(1).max(50).required() }).required();
+const createType = { body: Joi.object({ unitId: Joi.number().integer().positive().allow(null), key: key.required(), name: Joi.string().max(160).required(), description: Joi.string().allow('', null), schema, listTemplate: Joi.object().unknown(true).allow(null), detailTemplate: Joi.object().unknown(true).allow(null) }) };
+const updateType = { ...typeId, body: Joi.object({ name: Joi.string().max(160), description: Joi.string().allow('', null), listTemplate: Joi.object().unknown(true).allow(null), detailTemplate: Joi.object().unknown(true).allow(null) }).min(1) };
+const createVersion = { ...typeId, body: Joi.object({ schema }) };
+const publishVersion = { params: Joi.object({ id: Joi.number().integer().positive().required(), version: Joi.number().integer().positive().required() }) };
+const entryBody = { title: Joi.string().max(240), slug, status: Joi.string().valid('draft', 'published'), data: Joi.object().unknown(true) };
+const createEntry = { params: Joi.object({ typeId: Joi.number().integer().positive().required() }), body: Joi.object({ ...entryBody, title: entryBody.title.required(), slug: entryBody.slug.required(), data: entryBody.data.required() }) };
+const updateEntry = { ...typeEntryId, body: Joi.object(entryBody).min(1) };
+const publicList = { params: Joi.object({ slug: Joi.string().max(80).required(), key: key.required() }), query: Joi.object({ page: Joi.number().integer().min(1), limit: Joi.number().integer().min(1).max(100), search: Joi.string().max(200).allow(''), sortOrder: Joi.string().valid('asc', 'desc'), filterField: Joi.string().max(50), filterValue: Joi.alternatives(Joi.string(), Joi.number(), Joi.boolean()), dataSort: Joi.string().max(50) }).with('filterField', 'filterValue') };
+const publicDetail = { params: Joi.object({ slug: Joi.string().max(80).required(), key: key.required(), entrySlug: slug.required() }) };
+module.exports = { list, typeId, typeEntryId, createType, updateType, createVersion, publishVersion, createEntry, updateEntry, publicList, publicDetail };

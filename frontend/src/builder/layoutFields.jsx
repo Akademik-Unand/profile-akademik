@@ -1,11 +1,20 @@
 import { defaultBox } from '../constants/layoutBox';
+import { defaultMotion } from '../constants/blockMotion';
 import { ALIGN_OPTIONS } from '../constants/builder';
 import { AlignField } from './fields/AlignField';
+import { AnimationField } from './fields/AnimationField';
 import { DataDisplayField } from './fields/DataDisplayField';
 import { LayoutBoxField } from './fields/LayoutBoxField';
 import { MeasureField } from './fields/MeasureField';
 
-export { defaultBox };
+export { defaultBox, defaultMotion };
+
+export function layoutDefaults(boxOverrides = {}) {
+  return {
+    box: defaultBox(boxOverrides),
+    motion: defaultMotion(),
+  };
+}
 
 export function dataBindField(options) {
   return {
@@ -51,6 +60,11 @@ export function layoutFields({
           defaultPosition={defaultPosition}
         />
       ),
+    },
+    motion: {
+      type: 'custom',
+      label: 'Animasi',
+      render: AnimationField,
     },
   };
 }

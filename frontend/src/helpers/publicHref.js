@@ -31,6 +31,8 @@ export function publicHref(unitOrSlug, kind, slug) {
       return `${root}/organisasi`;
     case 'agenda':
       return `${root}/agenda`;
+    case 'data':
+      return `${root}/data/${slug}`;
     default:
       return root || '/';
   }

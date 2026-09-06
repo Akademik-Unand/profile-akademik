@@ -13,6 +13,7 @@ const LABEL_ALIASES = {
   'Tampilan data': ['bentuk', 'kartu', 'daftar', 'field', 'tampilkan'],
   'Field data': ['judul', 'tanggal', 'lokasi', 'isi data'],
   'Tautkan ke data': ['mapping', 'bind', 'judul data', 'gambar data'],
+  Animasi: ['fade', 'gerak', 'aos', 'jeda', 'durasi'],
   Padding: ['jarak dalam'],
   Margin: ['jarak luar'],
 };

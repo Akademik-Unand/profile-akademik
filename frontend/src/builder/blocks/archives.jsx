@@ -13,11 +13,11 @@ import { DataLoop } from './DataLoop';
 import { BlockPlaceholder } from './placeholder';
 import { showEditorChrome } from '../../helpers/builderChrome';
 
-export function OrganizationTreeBlock({ title, box, puck }) {
+export function OrganizationTreeBlock({ title, box, motion, puck }) {
   const { apiSlug, ready } = useBuilderSlugs();
   const query = usePublicOrganization(apiSlug);
   return (
-    <DataBlockFrame box={box} puck={puck}>
+    <DataBlockFrame box={box} motion={motion} puck={puck}>
       {title ? <h2 className="mb-6 font-headline text-2xl text-neutral-900">{title}</h2> : null}
       <DataBlockState puck={puck} ready={ready} query={query} emptyLabel="Struktur organisasi — belum ada anggota di unit ini">
         <OrganizationTree members={query.data?.items || []} />
@@ -26,11 +26,11 @@ export function OrganizationTreeBlock({ title, box, puck }) {
   );
 }
 
-export function PostArchiveBlock({ id, item, title, display, box, puck }) {
+export function PostArchiveBlock({ id, item, title, display, box, motion, puck }) {
   const { apiSlug, pathSlug, ready } = useBuilderSlugs();
   if (!ready) {
     return (
-      <DataBlockFrame box={box} puck={puck}>
+      <DataBlockFrame box={box} motion={motion} puck={puck}>
         {showEditorChrome(puck) ? (
           <BlockPlaceholder label="Arsip konten — unit belum siap" />
         ) : (
@@ -40,7 +40,7 @@ export function PostArchiveBlock({ id, item, title, display, box, puck }) {
     );
   }
   return (
-    <DataBlockFrame box={box} puck={puck}>
+    <DataBlockFrame box={box} motion={motion} puck={puck}>
       {title ? <h2 className="mb-6 font-headline text-2xl text-neutral-900">{title}</h2> : null}
       <PostArchive
         apiSlug={apiSlug}
@@ -64,12 +64,12 @@ export function PostArchiveBlock({ id, item, title, display, box, puck }) {
   );
 }
 
-export function AgendaArchiveBlock({ id, item, title, display, box, puck }) {
+export function AgendaArchiveBlock({ id, item, title, display, box, motion, puck }) {
   const { apiSlug, pathSlug, ready } = useBuilderSlugs();
   const query = usePublicAgendas(apiSlug, { limit: 50, sortBy: 'startsAt', sortOrder: 'asc' });
   const items = query.data?.items || [];
   return (
-    <DataBlockFrame box={box} puck={puck}>
+    <DataBlockFrame box={box} motion={motion} puck={puck}>
       {title ? <h2 className="mb-6 font-headline text-2xl text-neutral-900">{title}</h2> : null}
       <DataBlockState
         puck={puck}
@@ -104,7 +104,7 @@ export function AgendaArchiveBlock({ id, item, title, display, box, puck }) {
   );
 }
 
-export function CategoryFeedBlock({ id, item, title, category, limit, featuredOnly, display, box, puck }) {
+export function CategoryFeedBlock({ id, item, title, category, limit, featuredOnly, display, box, motion, puck }) {
   const { apiSlug, pathSlug, ready } = useBuilderSlugs();
   const query = usePublicPosts(apiSlug, {
     limit: Number(limit) || 6,
@@ -117,7 +117,7 @@ export function CategoryFeedBlock({ id, item, title, category, limit, featuredOn
   const archiveHref = category ? `${ROUTES.unitPosts(pathSlug)}?category=${category}` : ROUTES.unitPosts(pathSlug);
 
   return (
-    <DataBlockFrame box={box} puck={puck}>
+    <DataBlockFrame box={box} motion={motion} puck={puck}>
       <DataBlockState
         puck={puck}
         ready={ready}

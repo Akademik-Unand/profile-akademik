@@ -1,0 +1,2 @@
+import { describe,expect,it } from 'vitest';import { readDynamicValue,safeFormat } from './dynamicContent';
+describe('dynamic content bindings',()=>{it('reads only safe dotted paths',()=>{expect(readDynamicValue({data:{profile:{name:'Ada'}}},'profile.name')).toBe('Ada');expect(readDynamicValue({data:{name:'Ada'}},'__proto__.x')).toBeUndefined()});it('uses registered formatters only',()=>{expect(safeFormat('abc','uppercase')).toBe('ABC');expect(safeFormat('abc','not-real')).toBe('abc')})});

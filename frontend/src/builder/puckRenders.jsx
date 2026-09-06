@@ -31,6 +31,7 @@ import {
 } from './blocks/dynamic';
 import { AgendaArchiveBlock, CategoryFeedBlock, OrganizationTreeBlock, PostArchiveBlock } from './blocks/archives';
 import { DataFieldBlock } from './blocks/DataField';
+import { DynamicCollectionBlock } from './blocks/DynamicCollection';
 import { BlockFrame } from './blocks/BlockFrame';
 import { PageRoot } from './blocks/PageRoot';
 import { registerBlockRenders } from './blockRegistry';
@@ -66,6 +67,7 @@ const renders = {
   AgendaArchive: AgendaArchiveBlock,
   CategoryFeed: CategoryFeedBlock,
   DataField: DataFieldBlock,
+  DynamicCollection: DynamicCollectionBlock,
 };
 
 registerBlockRenders(renders);

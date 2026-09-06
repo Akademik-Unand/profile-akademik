@@ -49,6 +49,25 @@ describe('landingToBuilder', () => {
     expect(types[0]).toBe('Hero');
     expect(types.at(-1)).toBe('ClosingCta');
   });
+
+  it('keeps announcements and agenda in the original two-column section', () => {
+    const document = landingToBuilder({ showGallery: false, showUnits: false });
+    const section = document.content.find((item) => item.type === 'Section');
+    const columns = section?.props.content?.[0];
+
+    expect(section?.props.background).toBe('mist');
+    expect(columns).toMatchObject({ type: 'Columns', props: { count: 2, gap: 'lg' } });
+    expect(columns.props.columnA[0].type).toBe('Announcements');
+    expect(columns.props.columnB[0].type).toBe('AgendaList');
+  });
+
+  it('leaves the disabled landing column empty', () => {
+    const document = landingToBuilder({ showNews: false, showAgenda: true, showGallery: false, showUnits: false });
+    const columns = document.content.find((item) => item.type === 'Section')?.props.content?.[0];
+
+    expect(columns.props.columnA).toEqual([]);
+    expect(columns.props.columnB[0].type).toBe('AgendaList');
+  });
 });
 
 describe('safeBuilderDocument', () => {

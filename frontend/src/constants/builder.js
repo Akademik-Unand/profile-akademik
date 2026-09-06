@@ -28,6 +28,7 @@ export const BLOCK_TYPES = [
   'PostArchive',
   'AgendaArchive',
   'CategoryFeed',
+  'DynamicCollection',
   'DataField',
 ];
 
@@ -62,6 +63,7 @@ export const BUILDER_BLOCK_LABELS = {
   PostArchive: 'Arsip konten',
   AgendaArchive: 'Arsip agenda',
   CategoryFeed: 'Umpan kategori',
+  DynamicCollection: 'Koleksi dinamis',
   DataField: 'Isi data',
 };
 
@@ -95,6 +97,7 @@ export const BUILDER_BLOCK_META = {
   PostArchive: { icon: 'mdi:archive-outline', description: 'Arsip semua konten unit.' },
   AgendaArchive: { icon: 'mdi:calendar-clock-outline', description: 'Arsip agenda unit.' },
   CategoryFeed: { icon: 'mdi:shape-outline', description: 'Konten dari satu kategori.' },
+  DynamicCollection: { icon: 'mdi:database-sync-outline', description: 'Koleksi dari jenis data situs.' },
   DataField: { icon: 'mdi:database-outline', description: 'Judul, tanggal, atau field lain dari item data situs.' },
 };
 
@@ -156,6 +159,7 @@ export const SLOT_KEYS_BY_TYPE = {
   PostArchive: ['item'],
   AgendaArchive: ['item'],
   CategoryFeed: ['item'],
+  DynamicCollection: ['item'],
 };
 
 export const SLOT_KEYS = [...new Set(Object.values(SLOT_KEYS_BY_TYPE).flat())];

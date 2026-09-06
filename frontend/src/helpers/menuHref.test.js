@@ -27,6 +27,15 @@ describe('menuHref', () => {
     );
   });
 
+  it('builds a Dynamic Site Data archive path from the explicit target', () => {
+    expect(menuHref({ type: 'dynamic_content', targetContentType: { key: 'dosen' } }, 'akademik')).toBe(
+      '/akademik/data/dosen',
+    );
+    expect(menuHref({ type: 'dynamic_content', targetContentType: { key: 'fasilitas' } }, '')).toBe(
+      '/data/fasilitas',
+    );
+  });
+
   it('builds archive paths without using external_url', () => {
     expect(menuHref({ type: 'archive', externalUrl: 'posts' }, '')).toBe('/pengumuman');
     expect(menuHref({ type: 'archive', archiveKind: 'organization' }, 'perpustakaan')).toBe(

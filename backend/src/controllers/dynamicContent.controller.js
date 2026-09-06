@@ -1,0 +1,17 @@
+const service = require('../services/dynamicContent.service');
+const { success } = require('../utils/apiResponse');
+const asyncHandler = require('../middlewares/asyncHandler');
+const listTypes = asyncHandler(async (req, res) => success(res, { message: 'Daftar jenis data', data: await service.listTypes(req.query, req.user) }));
+const getType = asyncHandler(async (req, res) => success(res, { message: 'Detail jenis data', data: { contentType: await service.getType(Number(req.params.id), req.user) } }));
+const createType = asyncHandler(async (req, res) => success(res, { message: 'Jenis data berhasil dibuat', statusCode: 201, data: { contentType: await service.createType(req.body, req.user) } }));
+const updateType = asyncHandler(async (req, res) => success(res, { message: 'Jenis data berhasil diperbarui', data: { contentType: await service.updateType(Number(req.params.id), req.body, req.user) } }));
+const createVersion = asyncHandler(async (req, res) => success(res, { message: 'Versi schema berhasil dibuat', statusCode: 201, data: { version: await service.createVersion(Number(req.params.id), req.body.schema, req.user) } }));
+const publishVersion = asyncHandler(async (req, res) => success(res, { message: 'Schema berhasil dipublikasikan', data: { version: await service.publishVersion(Number(req.params.id), Number(req.params.version), req.user) } }));
+const listEntries = asyncHandler(async (req, res) => success(res, { message: 'Daftar entri', data: await service.listEntries(Number(req.params.typeId), req.query, req.user) }));
+const getEntry = asyncHandler(async (req, res) => success(res, { message: 'Detail entri', data: { entry: await service.getEntry(Number(req.params.typeId), Number(req.params.id), req.user) } }));
+const createEntry = asyncHandler(async (req, res) => success(res, { message: 'Entri berhasil dibuat', statusCode: 201, data: { entry: await service.createEntry(Number(req.params.typeId), req.body, req.user) } }));
+const updateEntry = asyncHandler(async (req, res) => success(res, { message: 'Entri berhasil diperbarui', data: { entry: await service.updateEntry(Number(req.params.typeId), Number(req.params.id), req.body, req.user) } }));
+const removeEntry = asyncHandler(async (req, res) => { await service.removeEntry(Number(req.params.typeId), Number(req.params.id), req.user); return success(res, { message: 'Entri berhasil dihapus', data: null }); });
+const listPublic = asyncHandler(async (req, res) => success(res, { message: 'Daftar data situs', data: await service.listPublic(req.params.slug, req.params.key, req.query) }));
+const getPublic = asyncHandler(async (req, res) => success(res, { message: 'Detail data situs', data: await service.getPublic(req.params.slug, req.params.key, req.params.entrySlug) }));
+module.exports = { listTypes, getType, createType, updateType, createVersion, publishVersion, listEntries, getEntry, createEntry, updateEntry, removeEntry, listPublic, getPublic };

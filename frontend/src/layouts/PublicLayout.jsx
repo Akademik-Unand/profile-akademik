@@ -3,6 +3,8 @@ import { SiteHeader } from '../components/public/SiteHeader';
 import { SiteFooter } from '../components/public/SiteFooter';
 import { SeoHead } from '../components/public/SeoHead';
 import { resolvePageSeo } from '../helpers/seo';
+import { unitThemeStyle } from '../helpers/unitTheme';
+import { usePublicMotion } from '../hooks/usePublicMotion';
 import { usePublicSiteUnit, usePublicUnits } from '../hooks/useUnits';
 
 export function PublicLayout({
@@ -14,13 +16,12 @@ export function PublicLayout({
   preview = false,
   previewBackTo,
 }) {
+  usePublicMotion();
   const unitsQuery = usePublicUnits({ limit: 50, sortBy: 'name', sortOrder: 'asc' });
   const units = unitsQuery.data?.items || [];
   const site = usePublicSiteUnit(unit && !unit.isDefault ? unit.slug : '');
   const chromeUnit = site.data || unit;
-  const themeStyle = chromeUnit?.themeColor
-    ? { '--color-primary': chromeUnit.themeColor, '--color-primary-hover': chromeUnit.themeColor }
-    : undefined;
+  const themeStyle = unitThemeStyle(chromeUnit?.themeColor);
   const headerMenus = menus.length ? menus : chromeUnit?.menus || [];
   const footerMenus = chromeUnit?.footerMenus || [];
   const tags = resolvePageSeo({ unit: chromeUnit, ...seo });

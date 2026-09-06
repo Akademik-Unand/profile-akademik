@@ -1,22 +1,10 @@
 import { useLayoutEffect, useRef } from 'react';
-import AOS from 'aos';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { AOS_CONFIG, prefersReducedMotion } from '../helpers/motion';
-import 'aos/dist/aos.css';
+import { initAos } from '../helpers/aosInit';
+import { prefersReducedMotion } from '../helpers/motion';
 
 gsap.registerPlugin(ScrollTrigger);
-
-let aosReady = false;
-
-function initAos() {
-  if (aosReady) {
-    AOS.refresh();
-    return;
-  }
-  AOS.init(AOS_CONFIG);
-  aosReady = true;
-}
 
 export function useLandingMotion(rootRef, revision) {
   const introPlayedRef = useRef(false);

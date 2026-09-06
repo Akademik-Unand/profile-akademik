@@ -10,6 +10,8 @@ const CMS_SUBJECTS = [
   'OrganizationMember',
   'Agenda',
   'Landing',
+  'ContentType',
+  'ContentEntry',
 ];
 
 const SCOPED = new Set(CMS_SUBJECTS);

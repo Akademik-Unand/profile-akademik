@@ -47,6 +47,12 @@ export const NAVIGATION_MENU = [
         icon: 'mdi:tag-outline',
         permission: { action: 'create', subject: 'PostCategory' },
       },
+      {
+        label: 'Jenis data situs',
+        path: ROUTES.adminContentTypes,
+        icon: 'mdi:database-outline',
+        permission: { action: 'read', subject: 'ContentType' },
+      },
     ],
   },
   {

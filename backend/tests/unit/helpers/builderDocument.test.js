@@ -49,8 +49,19 @@ describe('landingToBuilder', () => {
       showUnits: false,
       contactTitle: 'Akses layanan',
     });
-    expect(doc.content.map((item) => item.type)).toEqual(['Hero', 'NewsFeed', 'Announcements', 'ClosingCta']);
+    expect(doc.content.map((item) => item.type)).toEqual(['Hero', 'NewsFeed', 'Section', 'ClosingCta']);
     expect(doc.root.props.chrome).toBe('full');
+  });
+
+  it('keeps announcements and agenda inside one two-column section', () => {
+    const doc = landingToBuilder({ showServices: false, showGallery: false, showUnits: false });
+    const section = doc.content.find((item) => item.type === 'Section');
+    const columns = section.props.content[0];
+
+    expect(section.props.background).toBe('mist');
+    expect(columns).toMatchObject({ type: 'Columns', props: { count: 2, gap: 'lg' } });
+    expect(columns.props.columnA[0].type).toBe('Announcements');
+    expect(columns.props.columnB[0].type).toBe('AgendaList');
   });
 });
 
@@ -106,6 +117,24 @@ describe('normalizeBuilder', () => {
       zones: {},
     });
     expect(doc.content[0].props.display).toEqual({ layout: 'cards', title: false });
+  });
+
+  it('sanitizes motion on content blocks', () => {
+    const doc = normalizeBuilder({
+      content: [
+        {
+          type: 'Heading',
+          props: { motion: { effect: 'zoom-in', delay: 80, duration: 600, once: true, hack: true } },
+        },
+      ],
+      zones: {},
+    });
+    expect(doc.content[0].props.motion).toEqual({
+      effect: 'zoom-in',
+      delay: 80,
+      duration: 600,
+      once: true,
+    });
   });
 
   it('keeps a safe DataField key', () => {

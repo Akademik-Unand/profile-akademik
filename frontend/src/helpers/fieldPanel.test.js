@@ -13,6 +13,9 @@ describe('showPuckField', () => {
     expect(showPuckField('Gaya', 'youtube')).toBe(false);
     expect(showPuckField('URL YouTube', 'video')).toBe(true);
     expect(showPuckField('Tampilan data', 'kartu')).toBe(true);
+    expect(showPuckField('Animasi', 'fade')).toBe(true);
+    expect(showPuckField('Animasi', 'aos')).toBe(true);
+    expect(showPuckField('Animasi', 'youtube')).toBe(false);
   });
 });
 
