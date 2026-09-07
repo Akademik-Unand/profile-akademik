@@ -1,0 +1,37 @@
+# Ketentuan Unand:
+# - 1 container (App FE+BE + WebServer)
+# - MySQL TIDAK di Docker — pakai mysql-server di VM
+# - Volume hanya file berubah/config (.env, uploads, nginx config)
+# - Kode aplikasi di-COPY ke image saat build
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Relative = ikut HTTPS jika di depan proxy HTTPS kampus
+        VITE_API_BASE_URL: /api/v1
+    image: profile-akademik:v1
+    container_name: profile-akademik
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    env_file:
+      - ./config/.env
+    extra_hosts:
+      # Agar container bisa akses MySQL di host VM
+      - "host.docker.internal:host-gateway"
+    volumes:
+      # .env dibaca dari project (tidak di-bake ke image)
+      - ./config/.env:/app/backend/.env:ro
+      # Upload media (writable, di luar image)
+      - ./data/uploads:/app/backend/uploads
+      # Konfigurasi web server (statis/config)
+      - ./config/webserver-config.conf:/etc/nginx/conf.d/default.conf:ro
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s

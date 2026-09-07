@@ -96,6 +96,41 @@ export const SHADOW_OPTIONS = [
 
 export const SHADOW_VALUES = SHADOW_OPTIONS.map((item) => item.value);
 
+export const BACKGROUND_SIZE_OPTIONS = [
+  { label: 'Isi (cover)', value: 'cover' },
+  { label: 'Muat (contain)', value: 'contain' },
+  { label: 'Asli', value: 'auto' },
+];
+
+export const BACKGROUND_SIZE_VALUES = BACKGROUND_SIZE_OPTIONS.map((item) => item.value);
+
+export const BACKGROUND_POSITION_OPTIONS = [
+  { label: 'Tengah', value: 'center' },
+  { label: 'Atas', value: 'top' },
+  { label: 'Bawah', value: 'bottom' },
+  { label: 'Kiri', value: 'left' },
+  { label: 'Kanan', value: 'right' },
+];
+
+export const BACKGROUND_POSITION_VALUES = BACKGROUND_POSITION_OPTIONS.map((item) => item.value);
+
+export const OVERLAY_MODE_OPTIONS = [
+  { label: 'Warna polos', value: 'solid' },
+  { label: 'Gradasi', value: 'gradient' },
+];
+
+export const OVERLAY_MODE_VALUES = OVERLAY_MODE_OPTIONS.map((item) => item.value);
+
+export const OVERLAY_DIRECTION_OPTIONS = [
+  { label: 'Atas → bawah', value: 'to bottom' },
+  { label: 'Bawah → atas', value: 'to top' },
+  { label: 'Kiri → kanan', value: 'to right' },
+  { label: 'Kanan → kiri', value: 'to left' },
+  { label: 'Diagonal', value: 'to bottom right' },
+];
+
+export const OVERLAY_DIRECTION_VALUES = OVERLAY_DIRECTION_OPTIONS.map((item) => item.value);
+
 export const SHADOW_CSS = {
   none: '',
   sm: '0 1px 2px rgb(15 23 42 / 0.08)',
@@ -157,6 +192,15 @@ export function emptyBox(overrides = {}) {
   return {
     backgroundColor: '',
     color: '',
+    backgroundImage: null,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    overlayEnabled: false,
+    overlayMode: 'solid',
+    overlayColor: 'hero',
+    overlayGradientTo: '',
+    overlayDirection: 'to bottom',
+    overlayOpacity: 45,
     padding: emptySides(),
     margin: emptySides(),
     width: emptyMeasure(),
@@ -209,6 +253,10 @@ export function fillBox(box, extras = {}) {
   return {
     ...base,
     ...box,
+    backgroundImage:
+      box.backgroundImage && typeof box.backgroundImage === 'object' && box.backgroundImage.url
+        ? { mediaId: box.backgroundImage.mediaId || null, url: String(box.backgroundImage.url) }
+        : null,
     padding: fillSides(box.padding, base.padding),
     margin: fillSides(box.margin, base.margin),
     width: fillMeasure(box.width, base.width),
@@ -225,5 +273,6 @@ export function fillBox(box, extras = {}) {
     rotate: isBlank(box.rotate) ? base.rotate : box.rotate,
     flipX: box.flipX === true,
     flipY: box.flipY === true,
+    overlayEnabled: box.overlayEnabled === true,
   };
 }

@@ -18,6 +18,17 @@ export function defaultLandingServices(unitSlug) {
     { label: 'Kalender', icon: 'mdi:calendar-month-outline', url: `${root}/halaman/kalender-akademik` },
     { label: 'SIMA', icon: 'mdi:open-in-new', url: 'https://sima.unand.ac.id' },
     { label: 'UKT', icon: 'mdi:cash-multiple', url: `${root}/halaman/tata-cara-ukt` },
+    { label: 'iLearn', icon: 'mdi:laptop', url: 'https://ilearn.unand.ac.id' },
+    { label: 'Organisasi', icon: 'mdi:account-group-outline', url: `${root}/organisasi` },
+  ];
+}
+
+export function defaultLandingStats() {
+  return [
+    { value: '16+', label: 'Fakultas' },
+    { value: '50+', label: 'Program studi' },
+    { value: '20rb+', label: 'Mahasiswa' },
+    { value: '1', label: 'Portal akademik terpadu' },
   ];
 }
 

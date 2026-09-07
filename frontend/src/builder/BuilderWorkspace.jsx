@@ -18,12 +18,12 @@ export function BuilderWorkspace({
 
   return (
     <div id="admin-app" data-theme={theme} className="flex h-svh flex-col overflow-hidden bg-base-200 text-base-content">
-      <header className="flex h-12 shrink-0 items-center gap-3 border-b border-base-300 bg-base-100 px-4">
+      <header className="relative z-20 flex shrink-0 flex-wrap items-center gap-x-3 gap-y-2 border-b border-base-300 bg-base-100 px-4 py-2.5">
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm">{title}</p>
-          {subtitle ? <p className="truncate text-xs text-base-content/50">{subtitle}</p> : null}
+          <p className="truncate text-sm font-medium leading-tight">{title}</p>
+          {subtitle ? <p className="mt-0.5 truncate text-xs leading-tight text-base-content/50">{subtitle}</p> : null}
         </div>
-        <div className="flex shrink-0 flex-wrap items-center gap-2">
+        <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
           {extraActions}
           <button type="button" className="btn btn-primary btn-sm" disabled={saving} onClick={onSave}>
             Simpan
@@ -38,7 +38,7 @@ export function BuilderWorkspace({
           </Link>
         </div>
       </header>
-      <div className="min-h-0 flex-1 overflow-hidden">{children}</div>
+      <div className="relative z-0 min-h-0 flex-1 overflow-hidden">{children}</div>
     </div>
   );
 }

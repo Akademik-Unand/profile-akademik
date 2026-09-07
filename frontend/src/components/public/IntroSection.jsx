@@ -8,11 +8,12 @@ export function IntroSection({ landing, unitSlug, profileUrl }) {
   const profilHref = profileUrl || ROUTES.unitPage(unitSlug, 'profil');
 
   return (
-    <section className="bg-mist py-24 md:py-32">
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 md:grid-cols-12 md:items-start md:gap-16 md:px-6">
+    <section className="bg-mist py-20 md:py-28">
+      <div className="mx-auto grid max-w-7xl gap-12 px-4 md:grid-cols-12 md:items-end md:gap-16 md:px-6">
         <div className="md:col-span-5" data-aos="fade-up">
+          <p className="text-sm text-primary">Tentang kami</p>
           {landing.introTitle ? (
-            <h2 className="font-headline text-3xl leading-tight text-neutral-900 md:text-5xl">{landing.introTitle}</h2>
+            <h2 className="mt-2 font-headline text-3xl leading-tight text-neutral-900 md:text-5xl">{landing.introTitle}</h2>
           ) : null}
           <span className="mt-6 block h-1 w-16 bg-primary" aria-hidden="true" />
         </div>
@@ -23,8 +24,9 @@ export function IntroSection({ landing, unitSlug, profileUrl }) {
               {paragraph}
             </p>
           ))}
-          <Link to={profilHref} className="mt-8 inline-flex text-base text-primary hover:text-primary-hover">
+          <Link to={profilHref} className="mt-8 inline-flex items-center gap-2 text-base text-primary hover:text-primary-hover">
             Baca profil
+            <span aria-hidden="true">→</span>
           </Link>
         </div>
       </div>

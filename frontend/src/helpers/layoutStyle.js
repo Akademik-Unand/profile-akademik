@@ -1,6 +1,10 @@
 import {
   BORDER_STYLE_VALUES,
+  BACKGROUND_POSITION_VALUES,
+  BACKGROUND_SIZE_VALUES,
   FONT_VALUES,
+  OVERLAY_DIRECTION_VALUES,
+  OVERLAY_MODE_VALUES,
   SHADOW_CSS,
   SHADOW_VALUES,
   PLACE_X_VALUES,
@@ -14,6 +18,7 @@ import {
   emptyMeasure,
   emptySides,
 } from '../constants/layoutBox';
+import { resolveMediaSrc } from './mediaUrl';
 
 const POSITIONS = LAYOUT_POSITIONS.map((item) => item.value);
 
@@ -32,6 +37,47 @@ export function resolveColor(value) {
   if (PALETTE_HEX[trimmed]) return PALETTE_HEX[trimmed];
   if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(trimmed)) return trimmed;
   return '';
+}
+
+export function sanitizeImageUrl(url) {
+  if (typeof url !== 'string') return '';
+  const trimmed = url.trim().slice(0, 2048);
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (trimmed.startsWith('/uploads/')) return trimmed;
+  return '';
+}
+
+export function sanitizeBackgroundImage(image) {
+  if (!image || typeof image !== 'object' || Array.isArray(image)) return null;
+  const url = sanitizeImageUrl(image.url);
+  if (!url) return null;
+  const mediaId = Number(image.mediaId);
+  return { mediaId: Number.isFinite(mediaId) && mediaId > 0 ? mediaId : null, url };
+}
+
+function hexToRgba(hex, alpha) {
+  const raw = hex.replace('#', '');
+  const full = raw.length === 3 ? raw.split('').map((c) => c + c).join('') : raw;
+  if (!/^[0-9a-f]{6}$/i.test(full)) return `rgba(15, 23, 42, ${alpha})`;
+  const n = Number.parseInt(full, 16);
+  const r = (n >> 16) & 255;
+  const g = (n >> 8) & 255;
+  const b = n & 255;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+export function buildOverlayLayer(box) {
+  if (!box?.overlayEnabled) return '';
+  const opacity = Math.min(0.9, Math.max(0, Number(box.overlayOpacity ?? 45) / 100));
+  const from = resolveColor(box.overlayColor) || '#0e3b2e';
+  if (box.overlayMode === 'gradient') {
+    const toHex = resolveColor(box.overlayGradientTo) || 'transparent';
+    const to = toHex === 'transparent' ? `rgba(0,0,0,0)` : hexToRgba(toHex, opacity);
+    const dir = OVERLAY_DIRECTION_VALUES.includes(box.overlayDirection) ? box.overlayDirection : 'to bottom';
+    return `linear-gradient(${dir}, ${hexToRgba(from, opacity)}, ${to})`;
+  }
+  const solid = hexToRgba(from, opacity);
+  return `linear-gradient(${solid}, ${solid})`;
 }
 
 export function sanitizeNumber(value, min, max, unit = 'px') {
@@ -70,6 +116,15 @@ export function sanitizeBox(box) {
   return {
     backgroundColor: resolveColor(box.backgroundColor) ? String(box.backgroundColor).trim() : '',
     color: resolveColor(box.color) ? String(box.color).trim() : '',
+    backgroundImage: sanitizeBackgroundImage(box.backgroundImage),
+    backgroundSize: BACKGROUND_SIZE_VALUES.includes(box.backgroundSize) ? box.backgroundSize : 'cover',
+    backgroundPosition: BACKGROUND_POSITION_VALUES.includes(box.backgroundPosition) ? box.backgroundPosition : 'center',
+    overlayEnabled: box.overlayEnabled === true,
+    overlayMode: OVERLAY_MODE_VALUES.includes(box.overlayMode) ? box.overlayMode : 'solid',
+    overlayColor: resolveColor(box.overlayColor) ? String(box.overlayColor).trim() : 'hero',
+    overlayGradientTo: resolveColor(box.overlayGradientTo) ? String(box.overlayGradientTo).trim() : '',
+    overlayDirection: OVERLAY_DIRECTION_VALUES.includes(box.overlayDirection) ? box.overlayDirection : 'to bottom',
+    overlayOpacity: sanitizeNumber(box.overlayOpacity, 0, 90) === '' ? 45 : sanitizeNumber(box.overlayOpacity, 0, 90),
     padding: sanitizeSides(box.padding, 0, 240),
     margin: sanitizeSides(box.margin, -240, 240),
     width: sanitizeMeasure(box.width, 0, 2400, true),
@@ -125,6 +180,19 @@ export function boxToStyle(box = {}, { defaultPosition, containFixed } = {}) {
   const color = resolveColor(clean.color);
   if (backgroundColor) style.backgroundColor = backgroundColor;
   if (color) style.color = color;
+
+  const layers = [];
+  const overlay = buildOverlayLayer(clean);
+  if (overlay) layers.push(overlay);
+  const imageUrl = sanitizeImageUrl(clean.backgroundImage?.url);
+  if (imageUrl) {
+    const safe = resolveMediaSrc(imageUrl).replace(/"/g, '');
+    layers.push(`url("${safe}")`);
+    style.backgroundSize = clean.backgroundSize || 'cover';
+    style.backgroundPosition = clean.backgroundPosition || 'center';
+    style.backgroundRepeat = 'no-repeat';
+  }
+  if (layers.length) style.backgroundImage = layers.join(', ');
 
   applySides(style, 'padding', clean.padding);
   applySides(style, 'margin', clean.margin);

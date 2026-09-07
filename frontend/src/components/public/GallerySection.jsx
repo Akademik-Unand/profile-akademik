@@ -30,8 +30,11 @@ export function GallerySection({ landing }) {
   const items = landingGalleryItems(landing?.gallery || []);
   const { featured, rest } = splitGalleryMosaic(items);
   const [activeIndex, setActiveIndex] = useState(null);
-  const heading = sectionTitle(landing?.galleryTitle, 'Galeri');
-  const subtitle = sectionTitle(landing?.gallerySubtitle, '');
+  const heading = sectionTitle(landing?.galleryTitle, 'Kehidupan kampus');
+  const subtitle = sectionTitle(
+    landing?.gallerySubtitle,
+    'Dokumentasi kegiatan, fasilitas, dan suasana akademik.',
+  );
 
   useEffect(() => {
     if (activeIndex == null) return undefined;
@@ -52,17 +55,14 @@ export function GallerySection({ landing }) {
   }
 
   return (
-    <section className="bg-mist py-16">
+    <section className="bg-mist py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 md:px-6">
-        <h2 className="font-headline text-3xl text-neutral-900" data-aos="fade-up">
-          {heading}
-        </h2>
-        {subtitle ? (
-          <p className="mt-2 max-w-2xl text-sm text-neutral-600" data-aos="fade-up" data-aos-delay="80">
-            {subtitle}
-          </p>
-        ) : null}
-        <div className="mt-8 grid grid-cols-2 gap-2 lg:grid-cols-4" data-landing-gallery>
+        <div className="max-w-2xl" data-aos="fade-up">
+          <p className="text-sm text-primary">Galeri</p>
+          <h2 className="mt-2 font-headline text-3xl text-neutral-900 md:text-4xl">{heading}</h2>
+          {subtitle ? <p className="mt-3 text-sm leading-7 text-neutral-600 md:text-base">{subtitle}</p> : null}
+        </div>
+        <div className="mt-10 grid grid-cols-2 gap-2 lg:grid-cols-4" data-landing-gallery>
           <GalleryTile
             key={featured.key}
             item={featured}

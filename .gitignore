@@ -25,6 +25,13 @@ pnpm-debug.log*
 # Uploads and local media
 uploads/
 backend/uploads/
+data/uploads/*
+!data/uploads/.gitkeep
+
+# Docker local secrets / dumps
+config/.env
+mysql/*.sql
+mysql/*.sql.gz
 
 # OS and editors
 .DS_Store

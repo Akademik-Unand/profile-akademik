@@ -134,6 +134,10 @@ html {
     transition: none !important;
   }
 
+  .landing-hero-bg {
+    animation: none !important;
+  }
+
   #admin-app .builder-canvas .builder-motion-play {
     animation: none !important;
   }
@@ -144,6 +148,22 @@ body {
   font-family: var(--font-sans);
   background: var(--color-base);
   color: var(--color-neutral-800);
+}
+
+@keyframes landing-hero-kenburns {
+  from {
+    transform: scale(1);
+    opacity: 0.92;
+  }
+  to {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+.landing-hero-bg {
+  animation: landing-hero-kenburns 18s ease-out forwards;
+  will-change: transform;
 }
 
 html[data-theme-mode='dark'] {
@@ -490,6 +510,14 @@ html[data-theme-mode='dark'] {
 #admin-app .builder-canvas > div {
   height: 100%;
   min-height: 0;
+}
+
+/* Pastikan chrome Puck tidak menimpa header BuilderWorkspace */
+#admin-app .builder-canvas [class*='_PuckLayout-header_'],
+#admin-app .builder-canvas [class*='_Header_'] {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
 }
 
 #admin-app .builder-canvas [class*='_PuckCanvas-root_'] {

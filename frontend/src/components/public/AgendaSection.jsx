@@ -9,26 +9,29 @@ import { AgendaList } from './AgendaList';
 export function AgendaSection({ items = [], unitSlug, title, display }) {
   const view = agendaDisplay(display);
   if (!items.length) return null;
-  const heading = sectionTitle(title, 'Agenda');
+  const heading = sectionTitle(title, 'Agenda terdekat');
 
   return (
     <div>
-      <div className="mb-4 flex items-end justify-between">
-        <h2 className="font-headline text-2xl text-neutral-900">{heading}</h2>
-        <Link to={ROUTES.unitAgendas(unitSlug)} className="text-sm text-primary">
+      <div className="mb-6 flex items-end justify-between gap-3">
+        <div>
+          <p className="text-sm text-primary">Kalender</p>
+          <h2 className="mt-1 font-headline text-2xl text-neutral-900 md:text-3xl">{heading}</h2>
+        </div>
+        <Link to={ROUTES.unitAgendas(unitSlug)} className="shrink-0 text-sm text-primary">
           Semua
         </Link>
       </div>
       {view.layout === 'cards' ? (
         <AgendaList items={items} display={view} />
       ) : (
-        <ul className="divide-y divide-neutral-200 overflow-hidden rounded-md border border-neutral-200 bg-surface">
+        <ul className="divide-y divide-neutral-200 border-y border-neutral-200">
           {items.map((item) => {
             const date = datePartsId(item.startsAt);
             return (
-              <li key={item.id} className="flex gap-4 px-4 py-4">
+              <li key={item.id} className="flex gap-4 py-5">
                 {showDataField(view, 'date') && date ? (
-                  <span className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-md bg-mist text-center">
+                  <span className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-md bg-surface text-center">
                     <span className="font-headline text-xl text-primary">{date.day}</span>
                     <span className="text-xs uppercase text-neutral-500">{date.month}</span>
                   </span>

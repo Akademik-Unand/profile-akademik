@@ -1,11 +1,14 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Navigate } from 'react-router-dom';
 import { AuthLayout } from '../../layouts/AuthLayout';
 import { AdminField } from '../../components/admin/AdminField';
 import { loginSchema } from '../../validations/auth.schema';
-import { useLogin } from '../../hooks/useAuth';
+import { useCurrentUser, useLogin } from '../../hooks/useAuth';
+import { ROUTES } from '../../constants/routes';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function LoginPage() {
+  const { data: user, isLoading, isFetching, error } = useCurrentUser();
   const login = useLogin();
   const {
     register,
@@ -15,6 +18,19 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
   });
+
+  if (user) {
+    return <Navigate to={ROUTES.adminDashboard} replace />;
+  }
+
+  const checkingSession = !user && !error && (isLoading || isFetching);
+  if (checkingSession) {
+    return (
+      <AuthLayout title="Masuk admin" subtitle="Web profil Bidang Akademik Universitas Andalas">
+        <div className="skeleton h-40 w-full" />
+      </AuthLayout>
+    );
+  }
 
   return (
     <AuthLayout title="Masuk admin" subtitle="Web profil Bidang Akademik Universitas Andalas">

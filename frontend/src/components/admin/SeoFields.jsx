@@ -11,8 +11,8 @@ const seoFields = [
  */
 export function SeoFields({ register, errors = {}, names = { title: 'metaTitle', description: 'metaDescription', keywords: 'metaKeywords' } }) {
   return (
-    <div className="mt-2 grid gap-2 md:grid-cols-2">
-      <p className="md:col-span-2 text-sm text-base-content/70">Pengaturan SEO</p>
+    <div className="mt-2 space-y-3">
+      <p className="text-sm text-base-content/70">Pengaturan SEO</p>
       {seoFields.map((field) => (
         <AdminField key={field.name} label={field.label} error={errors[names[field.name]]?.message}>
           {field.textarea ? (

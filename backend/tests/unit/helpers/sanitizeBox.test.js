@@ -81,6 +81,23 @@ describe('sanitizeBox', () => {
     expect(sanitizeBox({ shadow: 'glow; url(x)' }).shadow).toBe('none');
   });
 
+  it('keeps background image and overlay settings', () => {
+    const clean = sanitizeBox({
+      backgroundImage: { url: 'https://cdn.example/a.jpg', mediaId: 9 },
+      backgroundSize: 'contain',
+      overlayEnabled: true,
+      overlayMode: 'gradient',
+      overlayColor: 'hero',
+      overlayOpacity: 50,
+    });
+    expect(clean.backgroundImage).toEqual({ url: 'https://cdn.example/a.jpg', mediaId: 9 });
+    expect(clean.backgroundSize).toBe('contain');
+    expect(clean.overlayEnabled).toBe(true);
+    expect(clean.overlayMode).toBe('gradient');
+    expect(clean.overlayOpacity).toBe(50);
+    expect(sanitizeBox({ backgroundImage: { url: 'javascript:evil' } }).backgroundImage).toBeNull();
+  });
+
   it('keeps a safe data display', () => {
     expect(sanitizeDisplay({ layout: 'cards', title: false, hack: true })).toEqual({
       layout: 'cards',

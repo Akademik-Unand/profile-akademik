@@ -7,6 +7,7 @@ import { GallerySection } from './GallerySection';
 import { UnitDirectory } from './UnitDirectory';
 import { IntroSection } from './IntroSection';
 import { ClosingCta } from './ClosingCta';
+import { StatsStrip } from './StatsStrip';
 import { LandingMotion } from './LandingMotion';
 import { BuilderRender } from '../../builder/BuilderRender';
 import { hasBuilder } from '../../helpers/builderDocument';
@@ -49,24 +50,23 @@ export function UnitHomeSections({ unit }) {
 
   return (
     <LandingMotion key={unit.id} revision={motionRevision}>
-      <div className={showServices ? 'pb-4' : ''}>
-        <HeroCarousel landing={landing} posts={heroPosts} unitSlug={pathSlug} overlap={showServices} />
-        {showServices ? <ServiceTiles landing={landing} unitSlug={pathSlug} /> : null}
-      </div>
+      <HeroCarousel landing={landing} posts={heroPosts} unitSlug={pathSlug} />
+      <StatsStrip />
+      {showServices ? <ServiceTiles landing={landing} unitSlug={pathSlug} /> : null}
       <IntroSection landing={landing} unitSlug={pathSlug} />
       {landing?.showNews !== false ? (
         <FeaturedNews posts={latest.data?.items || []} unitSlug={pathSlug} title={landing?.newsTitle} />
       ) : null}
       {landing?.showNews !== false || landing?.showAgenda !== false ? (
-        <section className="bg-mist py-16">
-          <div className="mx-auto grid max-w-7xl gap-10 px-4 md:px-6 lg:grid-cols-2">
+        <section className="bg-mist py-16 md:py-20">
+          <div className="mx-auto grid max-w-7xl gap-12 px-4 md:px-6 lg:grid-cols-2 lg:gap-16">
             {landing?.showNews !== false ? (
-              <div data-aos="fade-right">
+              <div data-aos="fade-up">
                 <Announcements posts={announcementPosts} unitSlug={pathSlug} title={landing?.announcementsTitle} />
               </div>
             ) : null}
             {landing?.showAgenda !== false ? (
-              <div data-aos="fade-left">
+              <div data-aos="fade-up" data-aos-delay="100">
                 <AgendaSection items={agendas.data?.items || []} unitSlug={pathSlug} title={landing?.agendaTitle} />
               </div>
             ) : null}

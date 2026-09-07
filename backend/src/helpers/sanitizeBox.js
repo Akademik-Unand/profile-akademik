@@ -13,6 +13,10 @@ const BORDER_STYLES = ['none', 'solid', 'dashed', 'dotted', 'double'];
 const SHADOWS = ['none', 'sm', 'md', 'lg'];
 const PLACE_X = ['stretch', 'left', 'center', 'right'];
 const PLACE_Y = ['top', 'middle', 'bottom'];
+const BACKGROUND_SIZES = ['cover', 'contain', 'auto'];
+const BACKGROUND_POSITIONS = ['center', 'top', 'bottom', 'left', 'right'];
+const OVERLAY_MODES = ['solid', 'gradient'];
+const OVERLAY_DIRECTIONS = ['to bottom', 'to top', 'to right', 'to left', 'to bottom right'];
 const PALETTE = [
   'primary',
   'primary-hover',
@@ -53,6 +57,22 @@ function sanitizeColor(value) {
   if (PALETTE.includes(trimmed)) return trimmed;
   if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(trimmed)) return trimmed;
   return '';
+}
+
+function sanitizeImageUrl(url) {
+  if (typeof url !== 'string') return '';
+  const trimmed = url.trim().slice(0, 2048);
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (trimmed.startsWith('/uploads/')) return trimmed;
+  return '';
+}
+
+function sanitizeBackgroundImage(image) {
+  if (!image || typeof image !== 'object' || Array.isArray(image)) return null;
+  const url = sanitizeImageUrl(image.url);
+  if (!url) return null;
+  const mediaId = Number(image.mediaId);
+  return { mediaId: Number.isFinite(mediaId) && mediaId > 0 ? mediaId : null, url };
 }
 
 function emptySides() {
@@ -99,6 +119,16 @@ function sanitizeBox(box) {
   return {
     backgroundColor: sanitizeColor(box.backgroundColor),
     color: sanitizeColor(box.color),
+    backgroundImage: sanitizeBackgroundImage(box.backgroundImage),
+    backgroundSize: BACKGROUND_SIZES.includes(box.backgroundSize) ? box.backgroundSize : 'cover',
+    backgroundPosition: BACKGROUND_POSITIONS.includes(box.backgroundPosition) ? box.backgroundPosition : 'center',
+    overlayEnabled: box.overlayEnabled === true,
+    overlayMode: OVERLAY_MODES.includes(box.overlayMode) ? box.overlayMode : 'solid',
+    overlayColor: sanitizeColor(box.overlayColor) || 'hero',
+    overlayGradientTo: sanitizeColor(box.overlayGradientTo),
+    overlayDirection: OVERLAY_DIRECTIONS.includes(box.overlayDirection) ? box.overlayDirection : 'to bottom',
+    overlayOpacity:
+      sanitizeNumber(box.overlayOpacity, 0, 90, 'px') === '' ? 45 : sanitizeNumber(box.overlayOpacity, 0, 90, 'px'),
     padding: sanitizeSides(box.padding, 0, 240),
     margin: sanitizeSides(box.margin, -240, 240),
     width: sanitizeMeasure(box.width, 0, 2400, true),

@@ -71,6 +71,7 @@ export default function LandingBuilderPage() {
       extraActions={
         <>
           <UnitSelect
+            variant="toolbar"
             value={unitId}
             onChange={(value) => navigate(landingBuilderHref(value === 'main' ? '' : value))}
           />

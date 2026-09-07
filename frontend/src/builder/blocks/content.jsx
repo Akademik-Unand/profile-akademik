@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { HtmlContent } from '../../components/public/HtmlContent';
 import { GallerySection } from '../../components/public/GallerySection';
-import { Icon } from '../../components/ui/Icon';
+import { StatsStrip } from '../../components/public/StatsStrip';
 import { PUCK_IMAGE_ALIGN, PUCK_IMAGE_SIZE } from '../../helpers/contentImage';
 import { showEditorChrome } from '../../helpers/builderChrome';
 import { buttonBoxStyle } from '../../helpers/buttonStyle';
@@ -138,18 +138,8 @@ export function StatsBlock({ items = [], motion, puck }) {
     return showEditorChrome(puck) ? <BlockPlaceholder label="Angka — isi statistik di panel kanan" /> : null;
   }
   return (
-    <section className="bg-hero py-14 text-white" {...motionAttrs(motion)}>
-      <ul className="mx-auto grid max-w-7xl gap-8 px-4 sm:grid-cols-2 md:px-6 lg:grid-cols-4">
-        {rows.map((item) => (
-          <li key={`${item.value}-${item.label}`}>
-            <p className="font-headline text-4xl">{item.value}</p>
-            <p className="mt-2 flex items-center gap-2 text-sm text-white/75">
-              {item.icon ? <Icon icon={item.icon} className="size-4" /> : null}
-              {item.label}
-            </p>
-          </li>
-        ))}
-      </ul>
-    </section>
+    <div {...motionAttrs(motion)}>
+      <StatsStrip items={rows} title="" />
+    </div>
   );
 }

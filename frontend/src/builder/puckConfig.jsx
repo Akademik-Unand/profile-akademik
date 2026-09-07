@@ -329,7 +329,15 @@ export const puckConfig = {
         },
         ...layoutFields(),
       },
-      defaultProps: { items: [{ value: '16', label: 'Fakultas' }], ...layoutDefaults() },
+      defaultProps: {
+        items: [
+          { value: '16+', label: 'Fakultas' },
+          { value: '50+', label: 'Program studi' },
+          { value: '20rb+', label: 'Mahasiswa' },
+          { value: '1', label: 'Portal akademik terpadu' },
+        ],
+        ...layoutDefaults(),
+      },
       render: puckRenders.Stats,
     },
     Hero: {

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { createUsePuck, Puck } from '@puckeditor/core';
+import { blocksPlugin, createUsePuck, outlinePlugin, Puck } from '@puckeditor/core';
 import '@puckeditor/core/puck.css';
 import { puckConfig } from './puckConfig';
 import { emptyBuilder } from '../helpers/builderDocument';
@@ -7,6 +7,7 @@ import { BuilderDrawer } from './BuilderDrawerFilter';
 import { BuilderDrawerItem } from './BuilderDrawerItem';
 import { BuilderFields, BuilderFieldLabel } from './BuilderFields';
 import { BuilderRuntimeProvider } from './BuilderRuntime';
+import { templatesPlugin } from './templates/templatesPlugin';
 
 const usePuckAppData = createUsePuck();
 
@@ -46,6 +47,11 @@ export function PageBuilder({ data, onChange, onPublish, liveRef, unit, unitSlug
     [header, liveRef],
   );
 
+  const plugins = useMemo(
+    () => [blocksPlugin({ label: 'Blok' }), templatesPlugin(), outlinePlugin({ label: 'Susunan' })],
+    [],
+  );
+
   function handleChange(next) {
     setDocument(next);
     if (liveRef) liveRef.current = next;
@@ -65,10 +71,12 @@ export function PageBuilder({ data, onChange, onPublish, liveRef, unit, unitSlug
           iframe={{ enabled: false }}
           dnd={{ behavior: 'static' }}
           ui={{ leftSideBarVisible: true, rightSideBarVisible: true }}
+          plugins={plugins}
           dictionary={{
             'header-publish': 'Terbitkan',
             'plugin-blocks': 'Blok',
             'plugin-outline': 'Susunan',
+            'plugin-templates': 'Template',
           }}
           overrides={overrides}
         />

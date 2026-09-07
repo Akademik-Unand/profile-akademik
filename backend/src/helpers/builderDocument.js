@@ -198,9 +198,18 @@ function landingToBuilder(landing = {}) {
     })),
   });
 
+  push('Stats', {
+    items: [
+      { value: '16+', label: 'Fakultas' },
+      { value: '50+', label: 'Program studi' },
+      { value: '20rb+', label: 'Mahasiswa' },
+      { value: '1', label: 'Portal akademik terpadu' },
+    ],
+  });
+
   if (landing.showServices !== false) {
     push('Services', {
-      title: landing.servicesTitle || '',
+      title: landing.servicesTitle || 'Akses layanan akademik',
       items: (landing.services || []).map((item) => ({
         label: item.label || '',
         icon: item.icon || 'mdi:link-variant',
@@ -218,7 +227,7 @@ function landingToBuilder(landing = {}) {
   }
 
   if (landing.showNews !== false) {
-    push('NewsFeed', { title: landing.newsTitle || 'Berita utama', limit: 6, featuredOnly: false });
+    push('NewsFeed', { title: landing.newsTitle || 'Berita terkini', limit: 6, featuredOnly: false });
   }
 
   if (landing.showNews !== false || landing.showAgenda !== false) {
@@ -266,8 +275,8 @@ function landingToBuilder(landing = {}) {
 
   if (landing.showGallery !== false && (landing.gallery || []).length) {
     push('Gallery', {
-      title: landing.galleryTitle || 'Galeri',
-      subtitle: landing.gallerySubtitle || '',
+      title: landing.galleryTitle || 'Kehidupan kampus',
+      subtitle: landing.gallerySubtitle || 'Dokumentasi kegiatan, fasilitas, dan suasana akademik.',
       items: (landing.gallery || []).map((item) => ({
         mediaId: item.mediaId || item.media?.id || null,
         url: item.media?.url || '',
@@ -278,7 +287,7 @@ function landingToBuilder(landing = {}) {
   }
 
   if (landing.showUnits) {
-    push('UnitDirectory', { title: landing.unitsTitle || 'Unit' });
+    push('UnitDirectory', { title: landing.unitsTitle || 'Fakultas dan unit' });
   }
 
   push('ClosingCta', {

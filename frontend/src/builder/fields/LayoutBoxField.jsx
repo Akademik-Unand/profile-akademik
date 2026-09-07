@@ -1,6 +1,7 @@
 import { FONT_OPTIONS, HEIGHT_UNITS, SHADOW_OPTIONS, fillBox } from '../../constants/layoutBox';
 import { showPuckField, showStyleSection } from '../../helpers/fieldPanel';
 import { useFieldPanel } from '../BuilderFields';
+import { BackgroundImageField } from './BackgroundImageField';
 import { BorderField } from './BorderField';
 import { ColorPaletteField } from './ColorPaletteField';
 import { BoxSpacingField } from './BoxSpacingField';
@@ -67,11 +68,15 @@ export function LayoutBoxField({
           />
         </div>
       </StyleSection>
-      {includeColor ? (
-        <StyleSection id="latar" title="Latar">
-          <ColorPaletteField value={box.backgroundColor} onChange={(backgroundColor) => patch({ backgroundColor })} />
-        </StyleSection>
-      ) : null}
+      <StyleSection id="latar" title="Latar">
+        {includeColor ? (
+          <div className="mb-2">
+            <p className="mb-1 text-[11px] text-base-content/55">Warna</p>
+            <ColorPaletteField value={box.backgroundColor} onChange={(backgroundColor) => patch({ backgroundColor })} />
+          </div>
+        ) : null}
+        <BackgroundImageField value={box} onChange={(next) => patch(next)} />
+      </StyleSection>
       {includeTextColor ? (
         <StyleSection id="teks" title="Warna teks">
           <ColorPaletteField value={box.color} onChange={(color) => patch({ color })} />

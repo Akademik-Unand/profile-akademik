@@ -1,7 +1,7 @@
 import { useAdminUnits } from '../../hooks/useUnits';
 import { useAuthStore } from '../../store/auth.store';
 
-export function UnitSelect({ value, onChange, disabled, variant = 'form' }) {
+export function UnitSelect({ value, onChange, disabled, variant = 'form', className = '' }) {
   const user = useAuthStore((s) => s.user);
   const isSuper = user?.role === 'superadmin';
   const { data } = useAdminUnits({ limit: 100, sortBy: 'name', sortOrder: 'asc' }, { enabled: isSuper });
@@ -14,8 +14,13 @@ export function UnitSelect({ value, onChange, disabled, variant = 'form' }) {
     else onChange(Number(raw));
   }
 
+  const selectClass =
+    variant === 'toolbar'
+      ? `select select-sm w-44 max-w-[12rem] ${className}`.trim()
+      : `select w-full ${className}`.trim();
+
   return (
-    <select className="select w-full" value={value ?? ''} disabled={disabled} onChange={handleChange}>
+    <select className={selectClass} value={value ?? ''} disabled={disabled} onChange={handleChange}>
       <option value="">{variant === 'filter' ? 'Semua' : 'Situs utama'}</option>
       {variant === 'filter' ? <option value="main">Situs utama</option> : null}
       {(data?.items || []).map((unit) => (

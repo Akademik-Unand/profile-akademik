@@ -20,7 +20,7 @@ const LABEL_ALIASES = {
 
 export const STYLE_SECTIONS = [
   { id: 'place', label: 'Position', keywords: ['letak', 'rapat', 'atas', 'bawah', 'tengah', 'kiri', 'kanan', 'posisi', 'position', 'putar', 'flip'] },
-  { id: 'latar', label: 'Latar', keywords: ['latar', 'warna', 'background'] },
+  { id: 'latar', label: 'Latar', keywords: ['latar', 'warna', 'background', 'gambar', 'overlay', 'gradasi', 'foto'] },
   { id: 'teks', label: 'Warna teks', keywords: ['teks', 'warna teks'] },
   { id: 'padding', label: 'Padding', keywords: ['padding', 'jarak dalam'] },
   { id: 'margin', label: 'Margin', keywords: ['margin', 'jarak luar'] },

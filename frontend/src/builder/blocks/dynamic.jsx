@@ -59,7 +59,7 @@ export function ServicesBlock({ title, items = [], box, motion, puck }) {
     );
   }
   return (
-    <DataBlockFrame box={box} motion={motion} puck={puck} className="bg-base pb-8">
+    <DataBlockFrame box={box} motion={motion} puck={puck}>
       <ServiceTiles landing={{ servicesTitle: title, services: items }} unitSlug={pathSlug} />
     </DataBlockFrame>
   );

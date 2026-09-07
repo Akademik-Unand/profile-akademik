@@ -105,6 +105,31 @@ describe('boxToStyle', () => {
     expect(boxToStyle({ opacity: 100, shadow: 'none' }).opacity).toBeUndefined();
     expect(boxToStyle({ shadow: 'drop; url(x)' }).boxShadow).toBeUndefined();
   });
+
+  it('applies background image with overlay gradient', () => {
+    const style = boxToStyle({
+      backgroundImage: { url: 'https://example.com/a.jpg', mediaId: 1 },
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      overlayEnabled: true,
+      overlayMode: 'gradient',
+      overlayColor: 'hero',
+      overlayGradientTo: '',
+      overlayDirection: 'to bottom',
+      overlayOpacity: 40,
+    });
+    expect(style.backgroundImage).toContain('linear-gradient(to bottom');
+    expect(style.backgroundImage).toContain('url("https://example.com/a.jpg")');
+    expect(style.backgroundSize).toBe('cover');
+  });
+
+  it('rejects unsafe background image urls', () => {
+    expect(sanitizeBox({ backgroundImage: { url: 'javascript:alert(1)' } }).backgroundImage).toBeNull();
+    expect(sanitizeBox({ backgroundImage: { url: '/uploads/ok.jpg', mediaId: 3 } }).backgroundImage).toEqual({
+      mediaId: 3,
+      url: '/uploads/ok.jpg',
+    });
+  });
 });
 
 describe('boxToStyle rotate and flip', () => {

@@ -8,16 +8,21 @@ import { ROUTES } from '../constants/routes';
 export function useCurrentUser() {
   const location = useLocation();
   const setUser = useAuthStore((state) => state.setUser);
-  const isAdminArea =
-    location.pathname.startsWith('/admin') && location.pathname !== ROUTES.adminLogin;
+  const clearUser = useAuthStore((state) => state.clearUser);
+  const isAdminArea = location.pathname.startsWith('/admin');
 
   return useQuery({
     queryKey: ['auth', 'me'],
     queryFn: async () => {
-      const payload = await authService.me();
-      const user = payload.data.user;
-      setUser(user);
-      return user;
+      try {
+        const payload = await authService.me();
+        const user = payload.data.user;
+        setUser(user);
+        return user;
+      } catch (error) {
+        if (error?.statusCode === 401) clearUser();
+        throw error;
+      }
     },
     enabled: isAdminArea,
     retry: (failureCount, error) => {

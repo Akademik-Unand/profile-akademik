@@ -10,7 +10,9 @@ import { useAuthStore } from '../../../store/auth.store';
 export default function MediaLibraryPage() {
   const user = useAuthStore((s) => s.user);
   const [unitId, setUnitId] = useState(user?.role === 'superadmin' ? '' : user?.units?.[0]?.id);
-  const { data, isLoading } = useAdminMedia({ limit: 50, unitId: unitId || undefined });
+  const { data, isLoading } = useAdminMedia(
+    unitId ? { limit: 50, unitId } : { limit: 50, ...(user?.role === 'superadmin' ? { site: 'main' } : {}) },
+  );
   const upload = useUploadMedia();
   const remove = useDeleteMedia();
   const confirmDelete = useConfirmDelete({ onConfirm: (row) => remove.mutateAsync(row.id) });
