@@ -27,12 +27,12 @@ export function Announcements({ posts = [], unitSlug, title }) {
                 {date ? (
                   <span className="w-14 shrink-0 text-center">
                     <span className="block font-headline text-2xl text-primary">{date.day}</span>
-                    <span className="text-xs uppercase tracking-wide text-neutral-500">{date.month}</span>
+                    <span className="text-xs uppercase tracking-wide text-neutral-600">{date.month}</span>
                   </span>
                 ) : null}
                 <span className="min-w-0 pt-1">
                   <span className="block text-sm leading-6 text-neutral-900">{item.title}</span>
-                  {item.category?.name ? <span className="mt-1 block text-xs text-neutral-500">{item.category.name}</span> : null}
+                  {item.category?.name ? <span className="mt-1 block text-xs text-neutral-600">{item.category.name}</span> : null}
                 </span>
               </Link>
             </li>

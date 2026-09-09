@@ -53,7 +53,7 @@ export function SiteHeader({ unit, menus = [], units = [], transparent }) {
               </span>
               <span
                 className={`public-brand-sub block font-body text-xs font-normal ${
-                  solid ? 'text-neutral-600' : 'text-white/80'
+                  solid ? 'text-neutral-600' : 'text-white/90'
                 }`}
               >
                 {unit?.name}

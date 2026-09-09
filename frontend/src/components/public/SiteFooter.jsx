@@ -108,7 +108,7 @@ export function SiteFooter({ unit, menus = [], units = [] }) {
           }
         />
       </div>
-      <div className="border-t border-white/10 py-4 text-center text-xs text-white/60">
+      <div className="border-t border-white/10 py-4 text-center text-xs text-white/80">
         © {new Date().getFullYear()} Universitas Andalas
       </div>
     </footer>

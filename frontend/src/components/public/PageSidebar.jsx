@@ -8,7 +8,7 @@ import { hasUnitContact, isActiveMenuItem } from '../../helpers/menuContext';
 
 function ContactRow({ icon, children }) {
   return (
-    <div className="flex items-start gap-3 text-sm leading-relaxed text-neutral-600">
+    <div className="flex items-start gap-3 text-sm leading-relaxed text-neutral-700">
       <Icon icon={icon} className="mt-0.5 size-4 shrink-0 text-primary" />
       <div>{children}</div>
     </div>
@@ -63,7 +63,7 @@ export function PageSidebar({ unit, unitSlug, group, items = [], currentHref, pa
               const href = menuHref(item, unitSlug);
               const active = isActiveMenuItem(item, unitSlug, { href: currentHref, pageSlug });
               const className = `flex items-center justify-between gap-2 px-3 py-2 text-sm ${
-                active ? 'border-l-2 border-primary bg-mist text-neutral-900' : 'border-l-2 border-transparent text-neutral-600 hover:bg-mist hover:text-neutral-900'
+                active ? 'border-l-2 border-primary bg-mist text-neutral-900' : 'border-l-2 border-transparent text-neutral-700 hover:bg-mist hover:text-neutral-900'
               }`;
               const external = Boolean(href?.startsWith('http'));
               return (
@@ -84,11 +84,11 @@ export function PageSidebar({ unit, unitSlug, group, items = [], currentHref, pa
       ) : force ? (
         <nav className="rounded-md border border-neutral-200 bg-surface p-5" aria-label="Menu terkait">
           <p className="font-headline text-sm text-neutral-900">Menu terkait</p>
-          <p className="mt-3 text-sm text-neutral-500">Belum ada menu di samping halaman ini. Tambah tautan di Menu.</p>
+          <p className="mt-3 text-sm text-neutral-600">Belum ada menu di samping halaman ini. Tambah tautan di Menu.</p>
         </nav>
       ) : null}
       {contact ? <ContactPanel unit={unit} /> : null}
-      <p className="text-sm text-neutral-500">
+      <p className="text-sm text-neutral-600">
         <Link to={ROUTES.unit(unitSlug)} className="hover:text-primary">
           Kembali ke beranda
         </Link>

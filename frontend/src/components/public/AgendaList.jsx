@@ -4,7 +4,7 @@ import { agendaDisplay, showDataField } from '../../helpers/dataDisplay';
 
 function AgendaMeta({ item, display }) {
   return (
-    <p className="mt-2 flex flex-wrap gap-x-4 text-sm text-neutral-600">
+    <p className="mt-2 flex flex-wrap gap-x-4 text-sm text-neutral-700">
       {showDataField(display, 'time') && item.timeText ? (
         <span className="inline-flex items-center gap-1">
           <Icon icon="mdi:clock-outline" className="size-4" />
@@ -29,14 +29,14 @@ function AgendaBody({ item, display, titleClass }) {
       ) : null}
       {showDataField(display, 'title') ? <h2 className={titleClass}>{item.title}</h2> : null}
       <AgendaMeta item={item} display={display} />
-      {showDataField(display, 'description') && item.description ? <p className="mt-2 text-sm text-neutral-600">{item.description}</p> : null}
+      {showDataField(display, 'description') && item.description ? <p className="mt-2 text-sm text-neutral-700">{item.description}</p> : null}
     </>
   );
 }
 
 export function AgendaList({ items = [], display }) {
   const view = agendaDisplay(display);
-  if (!items.length) return <p className="text-sm text-neutral-600">Belum ada agenda yang dipublikasikan.</p>;
+  if (!items.length) return <p className="text-sm text-neutral-700">Belum ada agenda yang dipublikasikan.</p>;
 
   if (view.layout === 'cards') {
     return (

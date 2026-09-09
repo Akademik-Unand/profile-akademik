@@ -14,7 +14,7 @@ export function ServiceTiles({ landing, unitSlug }) {
         <div className="max-w-2xl" data-aos="fade-up">
           <p className="text-sm text-primary">Layanan</p>
           <h2 className="mt-2 font-headline text-3xl text-neutral-900 md:text-4xl">{heading}</h2>
-          <p className="mt-3 text-sm leading-7 text-neutral-600 md:text-base">
+          <p className="public-copy mt-3 text-sm leading-7 md:text-base">
             Pintasan ke sistem dan informasi yang sering dibutuhkan mahasiswa dan dosen.
           </p>
         </div>
@@ -29,7 +29,7 @@ export function ServiceTiles({ landing, unitSlug }) {
                 </span>
                 <span className="min-w-0">
                   <span className="block text-sm text-neutral-900">{item.label}</span>
-                  <span className="mt-0.5 block text-xs text-neutral-500">Buka layanan</span>
+                  <span className="mt-0.5 block text-xs text-neutral-600">Buka layanan</span>
                 </span>
               </>
             );

@@ -32,7 +32,7 @@ export function ClosingCta({ landing, unit, unitSlug }) {
     <section className="bg-hero-footer py-16 text-white md:py-24">
       <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 md:flex-row md:items-end md:justify-between md:px-6">
         <div className="max-w-2xl" data-aos="fade-up">
-          <p className="text-sm text-white/65">Langkah berikutnya</p>
+          <p className="text-sm text-white/80">Langkah berikutnya</p>
           <h2 className="mt-2 font-headline text-3xl leading-tight md:text-5xl">{title}</h2>
           <p className="mt-4 text-base leading-8 text-white/80 md:text-lg">{body}</p>
         </div>

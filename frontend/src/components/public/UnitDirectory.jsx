@@ -13,7 +13,7 @@ export function UnitDirectory({ units = [], title }) {
         <div className="max-w-2xl" data-aos="fade-up">
           <p className="text-sm text-primary">Direktori</p>
           <h2 className="mt-2 font-headline text-3xl text-neutral-900 md:text-4xl">{heading}</h2>
-          <p className="mt-3 text-sm leading-7 text-neutral-600 md:text-base">
+          <p className="public-copy mt-3 text-sm leading-7 md:text-base">
             Jelajahi portal masing-masing unit di lingkungan Universitas Andalas.
           </p>
         </div>
@@ -37,7 +37,7 @@ export function UnitDirectory({ units = [], title }) {
                     <span className="font-headline text-sm text-neutral-900 group-hover:text-primary">{unit.name}</span>
                   </span>
                   {unit.description ? (
-                    <span className="mt-2 line-clamp-3 block text-sm leading-6 text-neutral-600">{unit.description}</span>
+                    <span className="public-copy mt-2 line-clamp-3 block text-sm leading-6">{unit.description}</span>
                   ) : null}
                 </span>
               </Link>

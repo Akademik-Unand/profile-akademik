@@ -166,6 +166,17 @@ body {
   will-change: transform;
 }
 
+/* Teks isi publik harus tetap kontras meski block/builder mewariskan warna tema. */
+.public-copy {
+  color: var(--color-neutral-700) !important;
+  -webkit-text-fill-color: var(--color-neutral-700) !important;
+}
+
+.public-meta {
+  color: var(--color-neutral-600) !important;
+  -webkit-text-fill-color: var(--color-neutral-600) !important;
+}
+
 html[data-theme-mode='dark'] {
   --color-base: #0b1220;
   --color-surface: #111827;

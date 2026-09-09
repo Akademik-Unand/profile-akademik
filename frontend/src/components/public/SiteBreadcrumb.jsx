@@ -6,7 +6,7 @@ import { ROUTES } from '../../constants/routes';
  */
 export function SiteBreadcrumb({ unitSlug, items = [], tone = 'dark' }) {
   const light = tone === 'light';
-  const linkClass = light ? 'text-white/55 hover:text-white' : 'hover:text-primary';
+  const linkClass = light ? 'text-white/80 hover:text-white' : 'hover:text-primary';
   const currentClass = light ? 'text-white/70' : 'text-neutral-800';
   const sepClass = light ? 'text-white/30' : 'text-neutral-400';
 

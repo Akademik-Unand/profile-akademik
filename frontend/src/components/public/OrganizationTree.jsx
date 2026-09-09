@@ -1,5 +1,5 @@
 export function OrganizationTree({ members = [] }) {
-  if (!members.length) return <p className="text-sm text-neutral-600">Struktur organisasi belum dipublikasikan.</p>;
+  if (!members.length) return <p className="text-sm text-neutral-700">Struktur organisasi belum dipublikasikan.</p>;
 
   return (
     <div className="space-y-8">
@@ -25,7 +25,7 @@ function OrganizationCard({ member }) {
         )}
         <div>
           <h2 className="font-headline text-lg text-neutral-900">{member.name}</h2>
-          <p className="mt-1 text-sm text-neutral-600">{member.title}</p>
+          <p className="mt-1 text-sm text-neutral-700">{member.title}</p>
         </div>
       </div>
       {member.children?.length ? (

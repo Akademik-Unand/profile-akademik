@@ -56,7 +56,7 @@ export function PostArchive({ apiSlug, pathSlug, display, sampleItems, emptyText
           </button>
         ))}
       </div>
-      <label className="mt-6 block text-sm text-neutral-600">
+      <label className="mt-6 block text-sm text-neutral-700">
         Periode
         <select
           className="mt-1 block rounded-md border border-neutral-200 bg-surface px-3 py-2 text-neutral-800"
@@ -70,7 +70,7 @@ export function PostArchive({ apiSlug, pathSlug, display, sampleItems, emptyText
           ))}
         </select>
       </label>
-      {usingSample ? <p className="mt-6 text-sm text-neutral-500">Belum ada konten terbit — ini contoh tampilan.</p> : null}
+      {usingSample ? <p className="mt-6 text-sm text-neutral-600">Belum ada konten terbit — ini contoh tampilan.</p> : null}
       {renderItems ? renderItems(list) : <PostItems items={list} pathSlug={pathSlug} display={display} emptyText={emptyText} />}
       {totalPages > 1 ? (
         <div className="mt-8 flex items-center gap-3 text-sm">
@@ -82,7 +82,7 @@ export function PostArchive({ apiSlug, pathSlug, display, sampleItems, emptyText
           >
             Sebelumnya
           </button>
-          <span className="text-neutral-600">
+          <span className="text-neutral-700">
             Halaman {page} dari {totalPages}
           </span>
           <button

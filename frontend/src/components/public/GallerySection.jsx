@@ -60,7 +60,7 @@ export function GallerySection({ landing }) {
         <div className="max-w-2xl" data-aos="fade-up">
           <p className="text-sm text-primary">Galeri</p>
           <h2 className="mt-2 font-headline text-3xl text-neutral-900 md:text-4xl">{heading}</h2>
-          {subtitle ? <p className="mt-3 text-sm leading-7 text-neutral-600 md:text-base">{subtitle}</p> : null}
+          {subtitle ? <p className="public-copy mt-3 text-sm leading-7 md:text-base">{subtitle}</p> : null}
         </div>
         <div className="mt-10 grid grid-cols-2 gap-2 lg:grid-cols-4" data-landing-gallery>
           <GalleryTile

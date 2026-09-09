@@ -33,12 +33,12 @@ export function AgendaSection({ items = [], unitSlug, title, display }) {
                 {showDataField(view, 'date') && date ? (
                   <span className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-md bg-surface text-center">
                     <span className="font-headline text-xl text-primary">{date.day}</span>
-                    <span className="text-xs uppercase text-neutral-500">{date.month}</span>
+                    <span className="text-xs uppercase text-neutral-600">{date.month}</span>
                   </span>
                 ) : null}
                 <span className="min-w-0">
                   {showDataField(view, 'title') ? <span className="block text-sm text-neutral-900">{item.title}</span> : null}
-                  <span className="mt-1 flex flex-wrap gap-x-3 text-xs text-neutral-500">
+                  <span className="mt-1 flex flex-wrap gap-x-3 text-xs text-neutral-600">
                     {showDataField(view, 'time') && item.timeText ? (
                       <span className="inline-flex items-center gap-1">
                         <Icon icon="mdi:clock-outline" className="size-3.5" />
@@ -53,7 +53,7 @@ export function AgendaSection({ items = [], unitSlug, title, display }) {
                     ) : null}
                   </span>
                   {showDataField(view, 'description') && item.description ? (
-                    <span className="mt-2 block text-sm text-neutral-600">{item.description}</span>
+                    <span className="public-copy mt-2 block text-sm">{item.description}</span>
                   ) : null}
                 </span>
               </li>

@@ -11,7 +11,7 @@ export function StatsStrip({ items, title = 'Menuju layanan akademik unggul' }) 
     <section className="bg-hero text-white" data-landing-stats>
       <div className="mx-auto max-w-7xl px-4 py-14 md:px-6 md:py-16">
         {title ? (
-          <p className="mb-8 max-w-xl text-sm text-white/70 md:text-base" data-aos="fade-up">
+          <p className="mb-8 max-w-xl text-sm text-white/85 md:text-base" data-aos="fade-up">
             {title}
           </p>
         ) : null}
@@ -19,7 +19,7 @@ export function StatsStrip({ items, title = 'Menuju layanan akademik unggul' }) 
           {rows.map((item, index) => (
             <li key={`${item.value}-${item.label}`} data-aos="fade-up" data-aos-delay={Math.min(index * 80, 240)}>
               <p className="font-headline text-4xl tracking-tight md:text-5xl">{item.value}</p>
-              <p className="mt-2 text-sm text-white/75">{item.label}</p>
+              <p className="mt-2 text-sm text-white/85">{item.label}</p>
             </li>
           ))}
         </ul>

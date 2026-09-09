@@ -41,7 +41,7 @@ export function FeaturedNews({ posts = [], unitSlug, title }) {
                   <h3 className="mt-2 font-headline text-2xl leading-snug text-white md:text-3xl">{featured.title}</h3>
                 </div>
               </div>
-              {featured.excerpt ? <p className="mt-4 text-sm leading-7 text-neutral-600 md:text-base">{featured.excerpt}</p> : null}
+              {featured.excerpt ? <p className="public-copy mt-4 text-sm leading-7 md:text-base">{featured.excerpt}</p> : null}
             </Link>
           ) : null}
           <div className="flex flex-col divide-y divide-neutral-200" data-aos="fade-up" data-aos-delay="120">
@@ -53,7 +53,7 @@ export function FeaturedNews({ posts = [], unitSlug, title }) {
                   <div className="h-24 w-32 shrink-0 rounded-md bg-mist" />
                 )}
                 <span className="min-w-0">
-                  <span className="block text-xs text-neutral-500">
+                  <span className="block text-xs text-neutral-600">
                     {item.publishedAt ? formatDateId(item.publishedAt) : item.category?.name}
                   </span>
                   <span className="mt-1 block text-sm leading-6 text-neutral-800 group-hover:text-primary">{item.title}</span>

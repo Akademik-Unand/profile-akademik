@@ -20,7 +20,7 @@ export function IntroSection({ landing, unitSlug, profileUrl }) {
         <div className="md:col-span-7" data-aos="fade-up" data-aos-delay="120">
           {lead ? <p className="text-lg leading-8 text-neutral-800 md:text-xl md:leading-9">{lead}</p> : null}
           {rest.map((paragraph) => (
-            <p key={paragraph} className="mt-5 text-base leading-8 text-neutral-600 md:text-lg">
+            <p key={paragraph} className="public-copy mt-5 text-base leading-8 md:text-lg">
               {paragraph}
             </p>
           ))}

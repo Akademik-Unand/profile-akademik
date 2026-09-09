@@ -8,7 +8,7 @@ function PostMeta({ item, display }) {
   if (showDataField(display, 'category') && item.category?.name) parts.push(item.category.name);
   if (showDataField(display, 'date') && item.publishedAt) parts.push(formatDateId(item.publishedAt));
   if (!parts.length) return null;
-  return <p className="text-xs text-neutral-500">{parts.join(' · ')}</p>;
+  return <p className="text-xs text-neutral-600">{parts.join(' · ')}</p>;
 }
 
 function PostBody({ item, pathSlug, display, titleClass }) {
@@ -20,7 +20,7 @@ function PostBody({ item, pathSlug, display, titleClass }) {
           {item.title}
         </Link>
       ) : null}
-      {showDataField(display, 'excerpt') && item.excerpt ? <p className="mt-1 text-sm text-neutral-600">{item.excerpt}</p> : null}
+      {showDataField(display, 'excerpt') && item.excerpt ? <p className="mt-1 text-sm text-neutral-700">{item.excerpt}</p> : null}
     </>
   );
 }
@@ -30,7 +30,7 @@ function PostBody({ item, pathSlug, display, titleClass }) {
  */
 export function PostItems({ items = [], pathSlug, display, emptyText = 'Belum ada konten.' }) {
   const view = postDisplay(display);
-  if (!items.length) return <p className="mt-6 text-sm text-neutral-600">{emptyText}</p>;
+  if (!items.length) return <p className="mt-6 text-sm text-neutral-700">{emptyText}</p>;
 
   if (view.layout === 'cards') {
     return (
