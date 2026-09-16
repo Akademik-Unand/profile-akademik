@@ -1,7 +1,7 @@
-import { blockId } from '../helpers/builderDocument';
-import { BAND_PADDING, CARD_BORDER, CARD_PADDING, SECTION_PADDING, defaultBox } from '../constants/layoutBox';
-import { defaultMotion } from '../constants/blockMotion';
-import { defaultAgendaDisplay } from '../constants/dataDisplay';
+import { blockId } from '../../helpers/builderDocument';
+import { BAND_PADDING, CARD_BORDER, CARD_PADDING, SECTION_PADDING, defaultBox } from '../../constants/layoutBox';
+import { defaultMotion } from '../../constants/blockMotion';
+import { defaultAgendaDisplay } from '../../constants/dataDisplay';
 
 function node(type, props = {}) {
   return { type, props: { id: blockId(type.toLowerCase()), motion: defaultMotion(), ...props } };
