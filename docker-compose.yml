@@ -1,10 +1,10 @@
 services:
-  backend:
+  backend-profile-akademik:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: backend:latest
-    container_name: backend
+    image: backend-profile-akademik:latest
+    container_name: backend-profile-akademik
     restart: unless-stopped
     ports:
       - "3001:3001"
@@ -32,19 +32,19 @@ services:
       retries: 3
       start_period: 40s
 
-  frontend:
+  frontend-profile-akademik:
     build:
       context: ./frontend
       dockerfile: Dockerfile
       args:
         VITE_API_BASE_URL: /api/v1
-    image: frontend:latest
-    container_name: frontend
+    image: frontend-profile-akademik:latest
+    container_name: frontend-profile-akademik
     restart: unless-stopped
     ports:
       - "5174:80"
     depends_on:
-      backend:
+      backend-profile-akademik:
         condition: service_healthy
     networks:
       - network
