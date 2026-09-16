@@ -31,8 +31,8 @@ USER node
 
 EXPOSE 3000
 
-# Healthcheck menembak GET /up (lihat src/app.js), bukan /health.
+# Healthcheck menembak GET /health (lihat src/app.js).
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD wget --quiet --tries=1 --spider http://localhost:3001/up || exit 1
+  CMD wget --quiet --tries=1 --spider http://localhost:3001/health || exit 1
 
 CMD ["npm", "start"]
